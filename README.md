@@ -14,4 +14,5 @@
 - spring-boot-starter-security для работы Spring Security
 - postgresql для работы драйвера PostgreSQL
 ## Сборка и запуск
-команда: java -jar demo-0.0.1-SNAPSHOT.jar
+- сборка: mvn install
+- запуск: java -jar demo-0.0.1-SNAPSHOT.jar
