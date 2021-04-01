@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>main page</title>
+    <style>
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            text-align: left;
+            border-collapse: separate;
+            border-spacing: 5px;
+            background: #ECE9E0;
+            color: #656665;
+            border: 16px solid #ECE9E0;
+            border-radius: 20px;
+        }
+        th {
+            font-size: 18px;
+            padding: 10px;
+        }
+        td {
+            background: #F5D7BF;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<div th:switch="${orders}">
+    <h3 th:case="null">У вас пока нет заказов.</h3>
+    <div th:case="*">
+        <h3>Заказы:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Номер заказа</th>
+                    <th>Адрес</th>
+                    <th>Дата выполнения заказа</th>
+                    <th>Дата оформления заказа</th>
+                    <th>Работники, назначенные на заказ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.city} + ', ул.' + ${order.street} + ', строение' + ${order.building} + ', кв.' + ${order.apartment}"></td>
+                    <td th:text="${order.targetDate}"></td>
+                    <td th:text="${order.creationDate}"></td>
+                    <td th:text="${order.workers}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<form action="/makeOrder" method="get">
+    <input type="submit" value="оформить заказ"/>
+</form>
+<form action="/" method="get">
+    <input type="submit" value="перейти на домашнюю страницу"/>
+</form>
+<form action="/changePassword" method="get">
+    <input type="submit" value="сменить пароль"/>
+</form>
+<form action="/logout" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+</body>
+</html>

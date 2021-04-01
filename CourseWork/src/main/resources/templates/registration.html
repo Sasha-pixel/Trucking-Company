@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Spring Security Example </title>
+</head>
+<body>
+<form action="/registrationAction" method="post">
+    <div><label> Username<a style="color:red">*</a> : <input type="text" name="username"/> </label></div>
+    <div><label> User Email<a style="color:red">*</a> : <input type="email" name="email"/> </label></div>
+    <div><label> Phone Number<a style="color:red">*</a> : <input type="tel" name="phoneNumber"/> </label></div>
+    <div><label> Password<a style="color:red">*</a> : <input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Sign up"/></div>
+    <span style="color:red" th:text = "${errorMessages}" />
+</form>
+</body>
+</html>

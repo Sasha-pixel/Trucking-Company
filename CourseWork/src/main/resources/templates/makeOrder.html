@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>OrderPage</title>
+</head>
+<body>
+<h1>Готовы принять ваш заказ!</h1>
+<p>Если в адресе указан многоквартирный дом, то заполнение поля "Квартира" является обязательным,
+    в ином случае поле может остаться незаполенным</p>
+<form action="/makeOrderAction" method="post">
+    <div><label> Населённый пункт<a style="color:red">*</a> : <input type="text" name="city"/> </label> <span style="color:red" th:text = "${city}" /></div>
+    <div><label> Улица<a style="color:red">*</a> : <input type="text" name="street"/> </label> <span style="color:red" th:text = "${street}" /></div>
+    <div><label> Дом<a style="color:red">*</a> : <input type="text" name="building"/> </label> <span style="color:red" th:text = "${building}" /></div>
+    <div><label> Квартира : <input type="text" name="apartment"/> </label></div>
+    <div><label> Дата<a style="color:red">*</a> : <input type="text" name="targetDate"/> </label> <span style="color:red" th:text = "${targetDate}" /></div>
+<!--    <div><label> Количесвто грузчиков<a style="color:red">*</a> : <input type="number" th:max="${maxNumberOfWorkers}" name="numberOfWorkers"/> </label> <span style="color:red" th:text = "${targetDate}" /></div>-->
+    <div><input type="submit" value="принять"/></div>
+</form>
+</body>
+</html>
