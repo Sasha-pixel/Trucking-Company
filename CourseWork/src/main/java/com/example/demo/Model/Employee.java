@@ -1,9 +1,10 @@
 package com.example.demo.Model;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
- * сущность работников компании
+ * Модель работника компании
  *
  * @author kanenkovaa
  * @version 0.1
@@ -22,47 +23,83 @@ public class Employee {
     @Column(name = "lastname")
     private String SecondName;
 
-    @ManyToOne(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,
+    @ManyToMany(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
-            CascadeType.REFRESH})
-    @JoinColumn(name = "order_id")
-    private Order order;
+            CascadeType.REFRESH},
+            mappedBy = "workers")
+    private List<Order> orders;
 
+    /**
+     * пустой конструктор
+     */
     public Employee() {
     }
 
-    public Employee(String firstName, String secondName, Order order) {
+    /**
+     * параметризованный конструктор
+     * @param firstName - имя
+     * @param secondName - фамилия
+     * @param order - заказ
+     */
+    public Employee(String firstName, String secondName, List<Order> order) {
         this.firstName = firstName;
         SecondName = secondName;
-        this.order = order;
+        this.orders = orders;
     }
 
+    /**
+     * получение имени
+     * @return firstName
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * установка имени
+     * @param firstName - имя
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * получение фамилии
+     * @return secondName - фамилия
+     */
     public String getSecondName() {
         return SecondName;
     }
 
+    /**
+     * установка фамилии
+     * @param secondName - фамилия
+     */
     public void setSecondName(String secondName) {
         SecondName = secondName;
     }
 
-    public Order getOrder() {
-        return order;
+    /**
+     * получение заказа
+     * @return order - заказ
+     */
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    /**
+     * установка заказа
+     * @param orders - заказ
+     */
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
+    /**
+     * метод для вывода информации о сотруднике
+     * @return имя и фамилию сотрудников
+     */
     @Override
     public String toString() {
         return getFirstName() + " " + getSecondName();

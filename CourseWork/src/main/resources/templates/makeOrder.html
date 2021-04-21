@@ -6,6 +6,23 @@
     <title>OrderPage</title>
 </head>
 <body>
+<script>
+        function getTodaysDate(){
+        date = new Date();
+        day = date.getDate();
+        month = date.getMonth() + 1;
+        month2 = date.getMonth() + 4;
+        year = date.getFullYear();
+        if (month < 10) month = "0" + month;
+        if (month2 < 10) month2 = "0" + month2;
+        if (day < 10) day = "0" + day;
+        today = year + "-" + month + "-" + day;
+        today2 = year + "-" + month2 + "-" + day;
+        document.getElementById('targetDate').setAttribute('min', today);
+        document.getElementById('targetDate').setAttribute('max', today2);
+<!--        return today;-->
+    }
+</script>
 <h1>Готовы принять ваш заказ!</h1>
 <p>Если в адресе указан многоквартирный дом, то заполнение поля "Квартира" является обязательным,
     в ином случае поле может остаться незаполенным</p>
@@ -14,8 +31,8 @@
     <div><label> Улица<a style="color:red">*</a> : <input type="text" name="street"/> </label> <span style="color:red" th:text = "${street}" /></div>
     <div><label> Дом<a style="color:red">*</a> : <input type="text" name="building"/> </label> <span style="color:red" th:text = "${building}" /></div>
     <div><label> Квартира : <input type="text" name="apartment"/> </label></div>
-    <div><label> Дата<a style="color:red">*</a> : <input type="text" name="targetDate"/> </label> <span style="color:red" th:text = "${targetDate}" /></div>
-<!--    <div><label> Количесвто грузчиков<a style="color:red">*</a> : <input type="number" th:max="${maxNumberOfWorkers}" name="numberOfWorkers"/> </label> <span style="color:red" th:text = "${targetDate}" /></div>-->
+    <div><label> Дата<a style="color:red">*</a> : <input type="date" name="targetDate" id="targetDate" oninput="getTodaysDate()"/> </label> <span style="color:red" th:text = "${targetDate}" /></div>
+    <div><label> Количесвто грузчиков<a style="color:red">*</a> : <input type="number" min="1" max="3" name="numberOfWorkers"/> </label> <span style="color:red" th:text = "${workers}" /></div>
     <div><input type="submit" value="принять"/></div>
 </form>
 </body>

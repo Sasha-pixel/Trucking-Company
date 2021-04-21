@@ -35,18 +35,17 @@ public class User {
     private String role;
 
     /**
-     * <p>Constructor for User.</p>
+     * пустой конструктор
      */
     public User() {
     }
 
     /**
-     * <p>Constructor for User.</p>
-     *
-     * @param username a {@link java.lang.String} object.
-     * @param email a {@link java.lang.String} object.
-     * @param password a {@link java.lang.String} object.
-     * @param phoneNumber a {@link java.lang.String} object.
+     * параметризованный конструктор
+     * @param username - никнейм пользователя
+     * @param email - адрес эл.почты
+     * @param password - пароль
+     * @param phoneNumber - номер телефона
      */
     public User(String username, String email, String password, String phoneNumber) {
         this.username = username;
@@ -56,72 +55,64 @@ public class User {
     }
 
     /**
-     * <p>Getter for the field <code>username</code>.</p>
-     *
-     * @return a {@link java.lang.String} object.
+     * получение никнейма пользователя
+     * @return username - никнейм пользователя
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * <p>Setter for the field <code>username</code>.</p>
-     *
-     * @param username a {@link java.lang.String} object.
+     * установка никнейма пользователя
+     * @param username - никнейм пользователя
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     * <p>Getter for the field <code>email</code>.</p>
-     *
-     * @return a {@link java.lang.String} object.
+     * получение адреса эл.почты
+     * @return email - адрес эл.почты
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * <p>Setter for the field <code>email</code>.</p>
-     *
-     * @param email a {@link java.lang.String} object.
+     * становка адреса эл.почты
+     * @param email - адрес эл.почты
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * <p>Getter for the field <code>password</code>.</p>
-     *
-     * @return a {@link java.lang.String} object.
+     * получение пароля
+     * @return password - пароль
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * <p>Setter for the field <code>password</code>.</p>
-     *
-     * @param password a {@link java.lang.String} object.
+     * установка пароля
+     * @param password - пароль
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     * <p>Getter for the field <code>phoneNumber</code>.</p>
-     *
-     * @return a {@link java.lang.String} object.
+     * получение номера телефона
+     * @return phoneNumber - номер телефона
      */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
     /**
-     * <p>Setter for the field <code>phoneNumber</code>.</p>
-     *
-     * @param phoneNumber a {@link java.lang.String} object.
+     * становка номера телефона
+     * @param phoneNumber - номер телефона
      */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;

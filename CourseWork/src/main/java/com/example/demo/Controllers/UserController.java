@@ -40,6 +40,8 @@ public class UserController {
      */
     @GetMapping("/login")
     public String authorizationPage() {
+        if (userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()) != null)
+            return "redirect:/main";
         return "login";
     }
 
@@ -67,7 +69,7 @@ public class UserController {
      * @return страницу регистрации
      */
     @GetMapping("/registration")
-    public String registration(Model model){
+    public String registration(Model model) {
         model.addAttribute("userForm", new User());
         return "registration";
     }

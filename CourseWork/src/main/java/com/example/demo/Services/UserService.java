@@ -112,9 +112,19 @@ public class UserService {
      * @return a boolean.
      */
     public boolean validatePhoneNumber(String phoneNumber) {
-        pattern = Pattern.compile(PHONE_PATTERN);
-        matcher = pattern.matcher(phoneNumber);
-        return matcher.matches();
+        if (phoneNumber.startsWith("8") || phoneNumber.startsWith("+7")) {
+            if (phoneNumber.startsWith("8")) {
+                pattern = Pattern.compile(PHONE_PATTERN);
+                matcher = pattern.matcher(phoneNumber.substring(1));
+                return matcher.matches();
+            }
+            else if (phoneNumber.startsWith("+7")) {
+                pattern = Pattern.compile(PHONE_PATTERN);
+                matcher = pattern.matcher(phoneNumber.substring(2));
+                return matcher.matches();
+            }
+        }
+        return false;
     }
 
     /**

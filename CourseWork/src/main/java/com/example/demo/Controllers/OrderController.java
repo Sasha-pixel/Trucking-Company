@@ -15,9 +15,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Контроллер, отвечающий за создание нового заказа
@@ -57,13 +57,8 @@ public class OrderController {
      * @return перенаправление на /main
      */
     @PostMapping("/makeOrderAction")
-    public String makeOrderAction(/*@ModelAttribute("city") String city,
-                                  @ModelAttribute("street") String street,
-                                  @ModelAttribute("building") String building,
-                                  @ModelAttribute("apartment") String apartment,
-                                  @ModelAttribute("targetDate") String targetDate,*/
-                                  @ModelAttribute("orderForm") Order orderForm,
-                                  //@ModelAttribute("numberOfWorkers") int numberOfWorkers,
+    public String makeOrderAction(@ModelAttribute Order orderForm,
+                                  @RequestParam("numberOfWorkers") int numberOfWorkers,
                                   BindingResult bindingResult, Model model) {
         //Order orderForm = new Order(city, street, building, apartment, targetDate);
         orderValidator.validate(orderForm, bindingResult);
@@ -76,10 +71,31 @@ public class OrderController {
             }
             return "makeOrder";
         }
+        if (orderForm.getApartment().isEmpty())
+            orderForm.setApartment("-");
         orderForm.setCustomerUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         orderForm.setCreationDate(new Date());
         List<Employee> workers = employeeService.findAll();
-        orderForm.setWorkers(workers.subList(0, 2));
+        List<Employee> workersBuf = new ArrayList<>();
+        boolean flag;
+        for (Employee worker : workers) {
+            flag = true;
+            if (worker.getOrders().isEmpty())
+                workersBuf.add(worker);
+            else {
+                for (Order order : worker.getOrders()) {
+                    if (order.getTargetDate().equals(orderForm.getTargetDate()))
+                        flag = false;
+                }
+                if (flag)
+                    workersBuf.add(worker);
+            }
+        }
+        if(numberOfWorkers > workersBuf.size()) {
+            model.addAttribute("workers", "Не хватает свободных грузчиков, попробуйте изменить дату или уменьшить количество требующихся грузчиков");
+            return "makeOrder";
+        }
+        orderForm.setWorkers(workersBuf.subList(0, numberOfWorkers));
         orderService.save(orderForm);
         return "redirect:/main";
     }

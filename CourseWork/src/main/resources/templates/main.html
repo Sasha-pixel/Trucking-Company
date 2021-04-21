@@ -27,8 +27,10 @@
 </head>
 <body>
 <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-<div th:switch="${orders}">
-    <h3 th:case="null">У вас пока нет заказов.</h3>
+<div th:switch="${orders.size()}">
+    <div  th:case="0">
+        <h3>У вас пока нет заказов.</h3>
+    </div>
     <div th:case="*">
         <h3>Заказы:</h3>
         <table>
@@ -44,7 +46,7 @@
             <tbody>
                 <tr th:each="order : ${orders}">
                     <td th:text="${order.id}"></td>
-                    <td th:text="${order.city} + ', ул.' + ${order.street} + ', строение' + ${order.building} + ', кв.' + ${order.apartment}"></td>
+                    <td th:text="${order.city} + ', ул.' + ${order.street} + ', строение ' + ${order.building} + ', кв.' + ${order.apartment}"></td>
                     <td th:text="${order.targetDate}"></td>
                     <td th:text="${order.creationDate}"></td>
                     <td th:text="${order.workers}"></td>

@@ -14,7 +14,7 @@
     <name>demo</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>1.8</java.version>
     </properties>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
@@ -80,6 +80,20 @@
                     <docencoding>UTF-8</docencoding>
                 </configuration>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-jar-plugin</artifactId>-->
+<!--                <version>2.4</version>-->
+<!--                <configuration>-->
+<!--                    <archive>-->
+<!--                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>-->
+<!--                        <manifest>-->
+<!--                            <addClasspath>true</addClasspath>-->
+<!--                            <mainClass>com.example.demo.DemoApplication</mainClass>-->
+<!--                        </manifest>-->
+<!--                    </archive>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
