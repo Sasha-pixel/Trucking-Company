@@ -33,6 +33,13 @@
     <div><label> Квартира : <input type="text" name="apartment"/> </label></div>
     <div><label> Дата<a style="color:red">*</a> : <input type="date" name="targetDate" id="targetDate" oninput="getTodaysDate()"/> </label> <span style="color:red" th:text = "${targetDate}" /></div>
     <div><label> Количесвто грузчиков<a style="color:red">*</a> : <input type="number" min="1" max="3" name="numberOfWorkers"/> </label> <span style="color:red" th:text = "${workers}" /></div>
+    <div><label> Тип автомобиля<a style="color:red">*</a> :
+    <select size="3" name="truckDescription">
+        <option value="Жёсткий 4м/2.2м/2м Груз 1500кг">Жёсткий 4м/2.2м/2м Груз 1500кг</option>
+        <option value="Тент 3м/1.5м/2м Груз 950кг">Тент 3м/1.5м/2м Груз 950кг</option>
+        <option value="Жёсткий 1.6м/1м/1м Груз 500кг">Жёсткий 1.6м/1м/1м Груз 500кг</option>
+    </select>
+    </label> <span style="color:red" th:text = "${truck}" /></div>
     <div><input type="submit" value="принять"/></div>
 </form>
 </body>

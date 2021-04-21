@@ -2,8 +2,10 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Model.Employee;
 import com.example.demo.Model.Order;
+import com.example.demo.Model.Truck;
 import com.example.demo.Services.EmployeeService;
 import com.example.demo.Services.OrderService;
+import com.example.demo.Services.TruckService;
 import com.example.demo.Services.UserService;
 import com.example.demo.Validators.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ public class OrderController {
     private EmployeeService employeeService;
 
     @Autowired
+    private TruckService truckService;
+
+    @Autowired
     private OrderValidator orderValidator;
 
     /**
@@ -58,6 +63,7 @@ public class OrderController {
      */
     @PostMapping("/makeOrderAction")
     public String makeOrderAction(@ModelAttribute Order orderForm,
+                                  @RequestParam("truckDescription") String truckDescription,
                                   @RequestParam("numberOfWorkers") int numberOfWorkers,
                                   BindingResult bindingResult, Model model) {
         //Order orderForm = new Order(city, street, building, apartment, targetDate);
@@ -94,6 +100,28 @@ public class OrderController {
         if(numberOfWorkers > workersBuf.size()) {
             model.addAttribute("workers", "Не хватает свободных грузчиков, попробуйте изменить дату или уменьшить количество требующихся грузчиков");
             return "makeOrder";
+        }
+        List<Truck> trucks = truckService.findAllByDescription(truckDescription);
+        if (trucks.isEmpty()) {
+            model.addAttribute("truck", "Не хватает свободных автомобилей, попробуйте изменить дату или уменьшить количество требующихся грузчиков");
+            return "makeOrder";
+        }
+        for (Truck truck : trucks) {
+            flag = true;
+            if (truck.getOrders().isEmpty()) {
+                orderForm.setTruck(truck);
+                break;
+            }
+            else {
+                for (Order order : truck.getOrders()) {
+                    if (order.getTargetDate().equals(orderForm.getTargetDate()))
+                        flag = false;
+                }
+                if (flag) {
+                    orderForm.setTruck(truck);
+                    break;
+                }
+            }
         }
         orderForm.setWorkers(workersBuf.subList(0, numberOfWorkers));
         orderService.save(orderForm);

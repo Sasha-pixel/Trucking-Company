@@ -49,6 +49,14 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<Employee> workers;
 
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH})
+    @JoinColumn(name = "truck_id")
+    private Truck truck;
+
     /**
      * пустой конструктор
      */
@@ -62,13 +70,15 @@ public class Order {
      * @param building - строение
      * @param apartment - квартира
      * @param targetDate - дата выполнения заказа
+     * @param truck - грузовик
      */
-    public Order(String city, String street, String building, String apartment, String targetDate) {
+    public Order(String city, String street, String building, String apartment, String targetDate, Truck truck) {
         this.city = city;
         this.street = street;
         this.building = building;
         this.apartment = apartment;
         this.targetDate = targetDate;
+        this.truck = truck;
     }
 
     /**
@@ -82,6 +92,7 @@ public class Order {
      * @param targetDate - дата выполнения заказа
      * @param creationDate - дата создания заказа
      * @param workers - сотрудники
+     * @param truck - грузовик
      */
     public Order(Long id,
                  String customerUsername,
@@ -91,7 +102,8 @@ public class Order {
                  String apartment,
                  String targetDate,
                  Date creationDate,
-                 List<Employee> workers) {
+                 List<Employee> workers,
+                 Truck truck) {
         this.id = id;
         this.customerUsername = customerUsername;
         this.city = city;
@@ -101,6 +113,7 @@ public class Order {
         this.targetDate = targetDate;
         this.creationDate = creationDate;
         this.workers = workers;
+        this.truck = truck;
     }
 
     /**
@@ -250,5 +263,21 @@ public class Order {
 //            });
 //        }
         this.workers = workers;
+    }
+
+    /**
+     * получение грузовика
+     * @return truck - грузовик
+     */
+    public Truck getTruck() {
+        return truck;
+    }
+
+    /**
+     * установка грузовика на заказ
+     * @param truck - рузовик
+     */
+    public void setTruck(Truck truck) {
+        this.truck = truck;
     }
 }
