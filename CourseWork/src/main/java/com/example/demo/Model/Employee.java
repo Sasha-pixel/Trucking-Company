@@ -38,9 +38,9 @@ public class Employee {
 
     /**
      * параметризованный конструктор
-     * @param firstName - имя
-     * @param secondName - фамилия
-     * @param order - заказ
+     * @param firstName имя
+     * @param secondName фамилия
+     * @param order заказ
      */
     public Employee(String firstName, String secondName, List<Order> order) {
         this.firstName = firstName;
@@ -58,7 +58,7 @@ public class Employee {
 
     /**
      * установка имени
-     * @param firstName - имя
+     * @param firstName имя
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -74,7 +74,7 @@ public class Employee {
 
     /**
      * установка фамилии
-     * @param secondName - фамилия
+     * @param secondName фамилия
      */
     public void setSecondName(String secondName) {
         SecondName = secondName;
@@ -90,7 +90,7 @@ public class Employee {
 
     /**
      * установка заказа
-     * @param orders - заказ
+     * @param orders заказ
      */
     public void setOrders(List<Order> orders) {
         this.orders = orders;

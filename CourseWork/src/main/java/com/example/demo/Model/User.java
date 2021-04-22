@@ -42,10 +42,10 @@ public class User {
 
     /**
      * параметризованный конструктор
-     * @param username - никнейм пользователя
-     * @param email - адрес эл.почты
-     * @param password - пароль
-     * @param phoneNumber - номер телефона
+     * @param username никнейм пользователя
+     * @param email адрес эл.почты
+     * @param password пароль
+     * @param phoneNumber номер телефона
      */
     public User(String username, String email, String password, String phoneNumber) {
         this.username = username;
@@ -64,7 +64,7 @@ public class User {
 
     /**
      * установка никнейма пользователя
-     * @param username - никнейм пользователя
+     * @param username никнейм пользователя
      */
     public void setUsername(String username) {
         this.username = username;
@@ -80,7 +80,7 @@ public class User {
 
     /**
      * становка адреса эл.почты
-     * @param email - адрес эл.почты
+     * @param email адрес эл.почты
      */
     public void setEmail(String email) {
         this.email = email;
@@ -96,7 +96,7 @@ public class User {
 
     /**
      * установка пароля
-     * @param password - пароль
+     * @param password пароль
      */
     public void setPassword(String password) {
         this.password = password;
@@ -112,7 +112,7 @@ public class User {
 
     /**
      * становка номера телефона
-     * @param phoneNumber - номер телефона
+     * @param phoneNumber номер телефона
      */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;

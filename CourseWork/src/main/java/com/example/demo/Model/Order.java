@@ -65,12 +65,12 @@ public class Order {
 
     /**
      * параметризованный конструктор v1
-     * @param city - город
-     * @param street - улица
-     * @param building - строение
-     * @param apartment - квартира
-     * @param targetDate - дата выполнения заказа
-     * @param truck - грузовик
+     * @param city город
+     * @param street улица
+     * @param building  строение
+     * @param apartment квартира
+     * @param targetDate дата выполнения заказа
+     * @param truck грузовик
      */
     public Order(String city, String street, String building, String apartment, String targetDate, Truck truck) {
         this.city = city;
@@ -83,16 +83,16 @@ public class Order {
 
     /**
      * параметризованный конструктор v2
-     * @param id - id
-     * @param customerUsername - никнейм заказчика
-     * @param city - город
-     * @param street - улица
-     * @param building - строение
-     * @param apartment - квартира
-     * @param targetDate - дата выполнения заказа
-     * @param creationDate - дата создания заказа
-     * @param workers - сотрудники
-     * @param truck - грузовик
+     * @param id id заказа
+     * @param customerUsername никнейм заказчика
+     * @param city город
+     * @param street улица
+     * @param building строение
+     * @param apartment квартира
+     * @param targetDate дата выполнения заказа
+     * @param creationDate дата создания заказа
+     * @param workers сотрудники
+     * @param truck грузовик
      */
     public Order(Long id,
                  String customerUsername,
@@ -126,7 +126,7 @@ public class Order {
 
     /**
      * установка id
-     * @param id заказа
+     * @param id id заказа
      */
     public void setId(Long id) {
         this.id = id;
@@ -142,7 +142,7 @@ public class Order {
 
     /**
      * установка никнейма заказчика
-     * @param customerUsername - никнейм заказчика
+     * @param customerUsername никнейм заказчика
      */
     public void setCustomerUsername(String customerUsername) {
         this.customerUsername = customerUsername;
@@ -158,7 +158,7 @@ public class Order {
 
     /**
      * установка города
-     * @param city - город
+     * @param city город
      */
     public void setCity(String city) {
         this.city = city;
@@ -174,7 +174,7 @@ public class Order {
 
     /**
      * установка улицы
-     * @param street - улица
+     * @param street улица
      */
     public void setStreet(String street) {
         this.street = street;
@@ -190,7 +190,7 @@ public class Order {
 
     /**
      * установка строения
-     * @param building - строение
+     * @param building строение
      */
     public void setBuilding(String building) {
         this.building = building;
@@ -206,7 +206,7 @@ public class Order {
 
     /**
      * установка квартиры
-     * @param apartment - квартира
+     * @param apartment квартира
      */
     public void setApartment(String apartment) {
         this.apartment = apartment;
@@ -222,7 +222,7 @@ public class Order {
 
     /**
      * установка даты выполнения заказа
-     * @param targetDate - дата выполнения заказа
+     * @param targetDate дата выполнения заказа
      */
     public void setTargetDate(String targetDate) {
         this.targetDate = targetDate;
@@ -238,7 +238,7 @@ public class Order {
 
     /**
      * установка даты создания заказа
-     * @param creationDate - дата создания заказа
+     * @param creationDate дата создания заказа
      */
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
@@ -254,7 +254,7 @@ public class Order {
 
     /**
      * установка сотрудников на заказ
-     * @param workers - лист сотрудников
+     * @param workers лист сотрудников
      */
     public void setWorkers(List<Employee> workers) {
 //        if (workers != null) {
@@ -275,7 +275,7 @@ public class Order {
 
     /**
      * установка грузовика на заказ
-     * @param truck - рузовик
+     * @param truck рузовик
      */
     public void setTruck(Truck truck) {
         this.truck = truck;

@@ -22,7 +22,7 @@ public class TruckService {
     /**
      * Поиск грузовиков по характеристике
      *
-     * @param description - характеристика грузовика
+     * @param description характеристика грузовика
      * @return description - характеристика грузовика
      */
     public List<Truck> findAllByDescription(String description) {
