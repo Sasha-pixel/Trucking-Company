@@ -3,9 +3,11 @@ package com.example.demo.Controllers;
 import com.example.demo.Model.Order;
 import com.example.demo.Model.User;
 import com.example.demo.Repositories.UserRepository;
+import com.example.demo.Roles.Role;
 import com.example.demo.Services.OrderService;
 import com.example.demo.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,11 +52,16 @@ public class MainController {
      * @return страницу личного кабинета
      */
     @GetMapping("/main")
-    public String mainPage(HttpServletResponse httpServletResponse, Model model) {
+    public String mainPage(HttpServletResponse httpServletResponse, @AuthenticationPrincipal User user, Model model) {
         //userService.createCookie(httpServletResponse);
-        List<Order> userOrders = orderService.findAllByCustomerUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("orders", userOrders);
-        return "main";
+        if (user.getRoles().contains(Role.ADMIN)) {
+            return "redirect:/admin/main";
+        }
+        else {
+            List<Order> userOrders = orderService.findAllByCustomerUsername(user.getUsername());
+            model.addAttribute("orders", userOrders);
+            return "mainUser";
+        }
     }
 
     /**

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>admin</title>
+    <style>
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            text-align: left;
+            border-collapse: separate;
+            border-spacing: 5px;
+            background: #FFD700;
+            color: black;
+            border: 16px solid #FF8C00;
+            border-radius: 20px;
+        }
+        th {
+            font-size: 18px;
+            padding: 10px;
+        }
+        td {
+            background: #FF8C00;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<form action="/" method="get">
+    <input type="submit" value="перейти на домашнюю страницу"/>
+</form>
+<form action="/changePassword" method="get">
+    <input type="submit" value="сменить пароль"/>
+</form>
+<form action="/logout" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+<div th:switch="${allOrders.size()}">
+    <div  th:case="0">
+        <h3>У пользователей пока нет заказов.</h3>
+    </div>
+    <div th:case="*">
+        <h3>Заказы:</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Заказчик</th>
+                <th>Номер заказа</th>
+                <th>Адрес</th>
+                <th>Дата выполнения заказа</th>
+                <th>Дата оформления заказа</th>
+                <th>Работники, назначенные на заказ</th>
+                <th>Номер автомобиля, назначенного на заказ</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${allOrders}">
+                <td th:text="${order.customerUsername}"></td>
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.city} + ', ул.' + ${order.street} + ', строение ' + ${order.building} + ', кв.' + ${order.apartment}"></td>
+                <td th:text="${order.targetDate}"></td>
+                <td th:text="${order.creationDate}"></td>
+                <td th:text="${order.workers}"></td>
+                <td th:text="${order.truck.carNumber}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

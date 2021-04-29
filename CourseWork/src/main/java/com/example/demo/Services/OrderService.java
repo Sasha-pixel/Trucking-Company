@@ -38,4 +38,20 @@ public class OrderService {
     public List<Order> findAllByCustomerUsername(String customerUsername) {
         return orderRepository.findAllByCustomerUsername(customerUsername);
     }
+
+    /**
+     * удаление заказа по его id
+     * @param id id заказа
+     */
+    public void delete(Long id) {
+        orderRepository.deleteById(id);
+    }
+
+    /**
+     * Метод для получения списка всех заказов, отсортированных по никнейму заказчика
+     * @return отсортированный список всех заказов
+     */
+    public List<Order> findAllByOrderByCustomerUsername() {
+        return orderRepository.findAllByOrderByCustomerUsername();
+    }
 }

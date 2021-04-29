@@ -1,22 +1,20 @@
 package com.example.demo.Controllers;
 
 import com.example.demo.Model.User;
-import com.example.demo.Repositories.UserRepository;
+import com.example.demo.Roles.Role;
 import com.example.demo.Services.UserService;
 import com.example.demo.Validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
-import java.util.List;
+import java.util.Collections;
 
 /**
  * Контроллер, отвечающий за регистрацию и атворизацию
@@ -25,7 +23,7 @@ import java.util.List;
  * @version 0.1
  */
 @Controller
-public class UserController {
+public class AuthorizationController {
 
     @Autowired
     private UserValidator userValidator;
@@ -75,7 +73,7 @@ public class UserController {
     }
 
     /**
-     *Непосредственная регистрация нового пользователя с проверкой вводимых данных
+     * Непосредственная регистрация нового пользователя с проверкой вводимых данных
      *
      * @param userForm a {@link com.example.demo.Model.User} object - объект пользователя из формы.
      * @param bindingResult a {@link org.springframework.validation.BindingResult} object - лист ошибок.
@@ -83,9 +81,9 @@ public class UserController {
      * @return переадресация на домашнюю страницу
      */
     @PostMapping("/registrationAction")
-    public String registration(@ModelAttribute("userForm") User userForm,
-                               BindingResult bindingResult,
-                               Model model) {
+    public String registrationAction(@ModelAttribute("userForm") User userForm,
+                                     BindingResult bindingResult,
+                                     Model model) {
 
         userValidator.validate(userForm, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -99,6 +97,7 @@ public class UserController {
             //model.addAttribute("errorMessages", bindingResult.);
             //System.out.println(bindingResult.toString());
         }
+        userForm.setRoles(Collections.singleton(Role.USER));
         userService.save(userForm);
         return "redirect:/main";
     }

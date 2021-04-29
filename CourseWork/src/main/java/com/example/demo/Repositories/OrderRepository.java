@@ -20,4 +20,16 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
      * @return Лист объектов Order
      */
     List<Order> findAllByCustomerUsername(String customerUsername);
+
+    /**
+     * Удаление заказа по его id
+     * @param id id заказа
+     */
+    void deleteById(Long id);
+
+    /**
+     * Метод для получения списка всех заказов, отсортированных по никнейму заказчика
+     * @return отсортированный список всех заказов
+     */
+    List<Order> findAllByOrderByCustomerUsername();
 }

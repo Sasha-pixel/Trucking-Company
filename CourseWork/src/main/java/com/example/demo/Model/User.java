@@ -1,10 +1,15 @@
 package com.example.demo.Model;
 
+import com.example.demo.Roles.Role;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.Constraint;
 import javax.validation.constraints.Email;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * Модель пользователя
@@ -14,7 +19,7 @@ import javax.validation.constraints.Email;
  */
 @Entity
 @Table(schema = "public", name = "user8")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +37,10 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    private String role;
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role8", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
     /**
      * пустой конструктор
@@ -46,13 +54,17 @@ public class User {
      * @param email адрес эл.почты
      * @param password пароль
      * @param phoneNumber номер телефона
+     * @param roles набор ролей
      */
-    public User(String username, String email, String password, String phoneNumber) {
+    public User(String username, String email, String password, String phoneNumber, Set<Role> roles) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.roles = roles;
     }
+
+
 
     /**
      * получение никнейма пользователя
@@ -60,6 +72,26 @@ public class User {
      */
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     /**
@@ -84,6 +116,11 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
     }
 
     /**
@@ -111,10 +148,26 @@ public class User {
     }
 
     /**
-     * становка номера телефона
+     * установка номера телефона
      * @param phoneNumber номер телефона
      */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * получение набора ролей
+     * @return roles - набор ролей
+     */
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    /**
+     * установка набора ролей
+     * @param roles набор ролей
+     */
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

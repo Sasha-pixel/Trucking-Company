@@ -1,5 +1,7 @@
 package com.example.demo.Configuration;
 
+import com.example.demo.Roles.Role;
+import com.example.demo.Services.DetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,15 +19,21 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import javax.sql.DataSource;
 
-@Configuration
 /**
  * Конфигурация Security
+ *
+ * @author kanenkovaa
+ * @version 0.1
  */
+@Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private DetailsService service;
 
     /**
      * Настройка доступа страниц
@@ -39,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/registration").permitAll()
                     .antMatchers("/registrationAction").permitAll()
                     .antMatchers("/end").permitAll()
+                .antMatchers("/admin/**").hasAuthority(String.valueOf(Role.ADMIN))
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -54,11 +63,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .passwordEncoder(passwordEncoder())
-                .usersByUsernameQuery("select username, password, '1' from user8 where username = ?")
-                .authoritiesByUsernameQuery("select username, password from user8 where username=?");
+//        auth.jdbcAuthentication()
+//                .dataSource(dataSource)
+//                .passwordEncoder(passwordEncoder())
+//                .usersByUsernameQuery("select username, password, roles from user8 where username = ?")
+//                .authoritiesByUsernameQuery("select u.username, ur.roles from user8 u inner join user_role8 ur on u.id = ur.user_id where u.username=?");
+        auth.userDetailsService(service).passwordEncoder(passwordEncoder());
     }
 
     /**
