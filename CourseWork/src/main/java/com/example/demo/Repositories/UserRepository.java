@@ -39,4 +39,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     */
    User findByPhoneNumber(String phoneNumber);
 
+   /**
+    * Поиск пользователя по коду активации учётной записи
+    * @param code код активации учётной записи
+    * @return a {@link com.example.demo.Model.User} object.
+    */
+    User findByActivationCode(String code);
 }

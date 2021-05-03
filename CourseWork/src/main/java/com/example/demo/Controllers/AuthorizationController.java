@@ -2,17 +2,13 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Model.User;
 import com.example.demo.Roles.Role;
-import com.example.demo.Services.UserService;
-import com.example.demo.Validators.UserValidator;
+import com.example.demo.Services.AuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 
@@ -26,10 +22,7 @@ import java.util.Collections;
 public class AuthorizationController {
 
     @Autowired
-    private UserValidator userValidator;
-
-    @Autowired
-    private UserService userService;
+    private AuthorizationService authorizationService;
 
     /**
      * Возврат страницы авторизации
@@ -38,9 +31,10 @@ public class AuthorizationController {
      */
     @GetMapping("/login")
     public String authorizationPage() {
-        if (userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()) != null)
-            return "redirect:/main";
-        return "login";
+//        if (authorizationService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()) != null)
+//            return "redirect:/main";
+//        return "login";
+        return authorizationService.checkAuthority();
     }
 
     //@GetMapping("/createCookie")
@@ -81,24 +75,30 @@ public class AuthorizationController {
      * @return переадресация на домашнюю страницу
      */
     @PostMapping("/registrationAction")
-    public String registrationAction(@ModelAttribute("userForm") User userForm,
-                                     BindingResult bindingResult,
-                                     Model model) {
+    public String registrationAction(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+//        if (authorizationService.validateUserForm(userForm, bindingResult, model)) {
+//            authorizationService.pasteUserForm(userForm, model);
+//            return "registration";
+//        }
+//        userForm.setRoles(Collections.singleton(Role.USER));
+//        authorizationService.save(userForm);
+//        return "redirect:/main";
+        return authorizationService.save(userForm, bindingResult, model);
+    }
 
-        userValidator.validate(userForm, bindingResult);
-        if (bindingResult.hasErrors()) {
-            for (Object object : bindingResult.getAllErrors()) {
-                if (object instanceof FieldError) {
-                    FieldError fieldError = (FieldError)object;
-                    model.addAttribute("errorMessages", fieldError.getCode());
-                }
-                return "registration";
-            }
-            //model.addAttribute("errorMessages", bindingResult.);
-            //System.out.println(bindingResult.toString());
-        }
-        userForm.setRoles(Collections.singleton(Role.USER));
-        userService.save(userForm);
-        return "redirect:/main";
+    /**
+     * метод активации учётной записи
+     * @param code код активации учётной записи
+     * @param model модель веб-страницы
+     * @return страница авторизации
+     */
+    @GetMapping("/activate/{code}")
+    public String activate(@PathVariable String code, Model model) {
+        boolean isActivated = authorizationService.activateUser(code);
+        if (isActivated)
+            model.addAttribute("activate_success", "Учётная запись успешно активирована");
+        else
+            model.addAttribute("activate_fail", "Активация учётной записи не удалась");
+        return "login";
     }
 }

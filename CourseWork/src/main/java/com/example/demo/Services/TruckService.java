@@ -31,13 +31,18 @@ public class TruckService {
         return truckRepository.findAllByDescription(description);
     }
 
-    public Order setTruckToOrder(Order orderForm, List<Truck> trucks, String truckDescription) {
+    /**
+     * установка автомобиля на заказ
+     * @param orderForm объект заказа
+     * @param trucks лист всех автомобилей
+     * @return
+     */
+    public Truck setTruckToOrder(Order orderForm, List<Truck> trucks) {
         boolean flag;
         for (Truck truck : trucks) {
             flag = true;
             if (truck.getOrders().isEmpty()) {
-                orderForm.setTruck(truck);
-                break;
+                return truck;
             }
             else {
                 for (Order order : truck.getOrders()) {
@@ -45,11 +50,10 @@ public class TruckService {
                         flag = false;
                 }
                 if (flag) {
-                    orderForm.setTruck(truck);
-                    break;
+                    return truck;
                 }
             }
         }
-        return orderForm;
+        return null;
     }
 }

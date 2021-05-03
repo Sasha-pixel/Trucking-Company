@@ -3,13 +3,21 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Spring Security Example </title>
+    <style>
+        body {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        input {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+    </style>
 </head>
 <body>
 <form action="/changePasswordAction" method="post">
-    <div><label> Old Password : <input type="password" name="old_password"/> </label></div>
-    <div><label> New Password: <input type="password" name="password"/> </label></div>
+    <div><label> Старый пароль: <input type="password" name="old_password"/> </label></div>
+    <div><label> Новый пароль: <input type="password" name="password"/> </label></div>
     <span style="color:red" th:text = "${errorMessage}" />
-    <div><input type="submit" value="Change Password"/></div>
+    <div><input type="submit" value="Сменить пароль"/></div>
 </form>
 </body>
 </html>

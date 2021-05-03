@@ -5,8 +5,13 @@
     <meta charset="UTF-8">
     <title>main page</title>
     <style>
-        table {
+        body {
+                font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        input {
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        table {
             text-align: left;
             border-collapse: separate;
             border-spacing: 5px;
@@ -59,17 +64,30 @@
         </table>
     </div>
 </div>
-<form action="/makeOrder" method="get">
-    <input type="submit" value="оформить заказ"/>
-</form>
+<span style="color:red" th:text = "${notActivated}" /></div>
+<div th:switch="${user.activationCode}">
+    <div th:case="null">
+        <form action="/makeOrder" method="get">
+            <input type="submit" value="оформить заказ"/>
+        </form>
+        <form action="/changePassword" method="get">
+            <input type="submit" value="сменить пароль"/>
+        </form>
+    </div>
+    <div th:case="*">
+        <form action="/makeOrder" method="get">
+            <input type="submit" disabled value="оформить заказ"/>
+        </form>
+        <form action="/changePassword" method="get">
+            <input type="submit" disabled value="сменить пароль"/>
+        </form>
+    </div>
+</div>
 <form action="/" method="get">
     <input type="submit" value="перейти на домашнюю страницу"/>
 </form>
-<form action="/changePassword" method="get">
-    <input type="submit" value="сменить пароль"/>
-</form>
 <form action="/logout" method="post">
-    <input type="submit" value="Sign Out"/>
+    <input type="submit" value="Выйти из профиля"/>
 </form>
 </body>
 </html>

@@ -6,7 +6,6 @@ import com.example.demo.Model.Truck;
 import com.example.demo.Services.EmployeeService;
 import com.example.demo.Services.OrderService;
 import com.example.demo.Services.TruckService;
-import com.example.demo.Services.UserService;
 import com.example.demo.Validators.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,22 +62,30 @@ public class OrderController {
                                   @RequestParam("truckDescription") String truckDescription,
                                   @RequestParam("numberOfWorkers") int numberOfWorkers,
                                   BindingResult bindingResult, Model model) {
-        //Order orderForm = new Order(city, street, building, apartment, targetDate);
-        orderValidator.validate(orderForm, bindingResult);
-        if (bindingResult.hasErrors()) {
-            for (Object object : bindingResult.getAllErrors()) {
-                if (object instanceof FieldError) {
-                    FieldError fieldError = (FieldError)object;
-                    model.addAttribute(fieldError.getField(), fieldError.getCode());
-                }
-            }
+        List<Employee> workers = employeeService.findAll();
+        List<Employee> workersBuf = employeeService.setWorkersToOrder(orderForm, workers);
+        List<Truck> trucks = truckService.findAllByDescription(truckDescription);
+        Truck truck = truckService.setTruckToOrder(orderForm, trucks);
+//        orderValidator.validate(orderForm, bindingResult);
+//        if (bindingResult.hasErrors()) {
+//            for (Object object : bindingResult.getAllErrors()) {
+//                if (object instanceof FieldError) {
+//                    FieldError fieldError = (FieldError)object;
+//                    model.addAttribute(fieldError.getField(), fieldError.getCode());
+//                }
+//            }
+//            orderService.pasteOrderForm(orderForm, numberOfWorkers, model);
+//            return "makeOrder";
+//        }
+        if (orderService.validateOrderForm(orderForm, workersBuf, numberOfWorkers, truck, bindingResult, model)) {
+            orderService.pasteOrderForm(orderForm, numberOfWorkers, model);
             return "makeOrder";
         }
         if (orderForm.getApartment().isEmpty())
             orderForm.setApartment("-");
         orderForm.setCustomerUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         orderForm.setCreationDate(new Date());
-        List<Employee> workers = employeeService.findAll();
+//        List<Employee> workers = employeeService.findAll();
 //        List<Employee> workersBuf = new ArrayList<>();
 //        boolean flag;
 //        for (Employee worker : workers) {
@@ -94,16 +101,16 @@ public class OrderController {
 //                    workersBuf.add(worker);
 //            }
 //        }
-        List<Employee> workersBuf = employeeService.setWorkersToOrder(orderForm, workers);
-        if(numberOfWorkers > workersBuf.size()) {
-            model.addAttribute("workers", "Не хватает свободных грузчиков, попробуйте изменить дату или уменьшить количество требующихся грузчиков");
-            return "makeOrder";
-        }
-        List<Truck> trucks = truckService.findAllByDescription(truckDescription);
-        if (trucks.isEmpty()) {
-            model.addAttribute("truck", "Не хватает свободных автомобилей, попробуйте изменить дату или уменьшить количество требующихся грузчиков");
-            return "makeOrder";
-        }
+//        List<Employee> workersBuf = employeeService.setWorkersToOrder(orderForm, workers);
+//        if(numberOfWorkers > workersBuf.size()) {
+//            model.addAttribute("workers", "Не хватает свободных грузчиков, попробуйте изменить дату или уменьшить количество требующихся грузчиков");
+//            return "makeOrder";
+//        }
+//        List<Truck> trucks = truckService.findAllByDescription(truckDescription);
+//        if (trucks.isEmpty()) {
+//            model.addAttribute("truck", "Не хватает свободных автомобилей, попробуйте изменить дату или сменить тип автомобиля");
+//            return "makeOrder";
+//        }
 //        for (Truck truck : trucks) {
 //            flag = true;
 //            if (truck.getOrders().isEmpty()) {
@@ -121,12 +128,17 @@ public class OrderController {
 //                }
 //            }
 //        }
-        orderForm = truckService.setTruckToOrder(orderForm, trucks, truckDescription);
+        orderForm.setTruck(truck);
         orderForm.setWorkers(workersBuf.subList(0, numberOfWorkers));
         orderService.save(orderForm);
         return "redirect:/main";
     }
 
+    /**
+     * метод удаления заказа
+     * @param id номер заказа
+     * @return перенаправление на странцу личного кабинета
+     */
     @GetMapping("/deleteOrder/{id}")
     public String deleteOrder(@PathVariable("id") Long id) {
         orderService.delete(id);

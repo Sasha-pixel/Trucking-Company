@@ -31,6 +31,9 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "activation_code")
+    private String activationCode;
+
     @Column(name = "password")
     private String password;
 
@@ -52,13 +55,15 @@ public class User implements UserDetails {
      * параметризованный конструктор
      * @param username никнейм пользователя
      * @param email адрес эл.почты
+     * @param activationCode код для активации учётной записи
      * @param password пароль
      * @param phoneNumber номер телефона
      * @param roles набор ролей
      */
-    public User(String username, String email, String password, String phoneNumber, Set<Role> roles) {
+    public User(String username, String email, String activationCode, String password, String phoneNumber, Set<Role> roles) {
         this.username = username;
         this.email = email;
+        this.activationCode = activationCode;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.roles = roles;
@@ -118,6 +123,26 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    /**
+     * получение кода активаии учётной записи
+     * @return activationCode - код активации учётной записи
+     */
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    /**
+     * установка кода активации учётной записи
+     * @param activationCode код активации учётной записи
+     */
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
+
+    /**
+     * получение ролей пользователя
+     * @return roles - набор ролей
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;

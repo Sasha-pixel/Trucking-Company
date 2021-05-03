@@ -2,25 +2,13 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Model.Order;
 import com.example.demo.Model.User;
-import com.example.demo.Repositories.OrderRepository;
-import com.example.demo.Repositories.UserRepository;
-import com.example.demo.Roles.Role;
 import com.example.demo.Services.OrderService;
-import com.example.demo.Services.UserService;
-import com.example.demo.Validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,8 +31,12 @@ public class AdminController {
      * @return admin - страница администратора
      */
     @GetMapping("/main")
-    public String adminPage(Model model) {
+    public String adminPage(@AuthenticationPrincipal User user, Model model) {
         List<Order> allOrders = orderService.findAllByOrderByCustomerUsername();
+        if (user.getActivationCode() != null)
+            model.addAttribute("notActivated", "Вы не активировали учётную запись," +
+                    " в связи с этим, некоторые функции личного кабинета недоступны");
+        model.addAttribute("user", user);
         model.addAttribute("allOrders", allOrders);
         return "admin";
     }

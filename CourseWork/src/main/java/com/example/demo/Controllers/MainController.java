@@ -2,10 +2,9 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Model.Order;
 import com.example.demo.Model.User;
-import com.example.demo.Repositories.UserRepository;
 import com.example.demo.Roles.Role;
 import com.example.demo.Services.OrderService;
-import com.example.demo.Services.UserService;
+import com.example.demo.Services.AuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +28,7 @@ import java.util.List;
 public class MainController {
 
     @Autowired
-    private UserService userService;
+    private AuthorizationService authorizationService;
 
     @Autowired
     private OrderService orderService;
@@ -52,16 +51,25 @@ public class MainController {
      * @return страницу личного кабинета
      */
     @GetMapping("/main")
-    public String mainPage(HttpServletResponse httpServletResponse, @AuthenticationPrincipal User user, Model model) {
+    public String mainPage(HttpServletResponse httpServletResponse,
+                           @AuthenticationPrincipal User user,
+                           Model model) {
         //userService.createCookie(httpServletResponse);
-        if (user.getRoles().contains(Role.ADMIN)) {
-            return "redirect:/admin/main";
-        }
-        else {
-            List<Order> userOrders = orderService.findAllByCustomerUsername(user.getUsername());
-            model.addAttribute("orders", userOrders);
-            return "mainUser";
-        }
+//        if (user.getRoles().contains(Role.ADMIN)) {
+//            if (user.getActivationCode() != null)
+//                model.addAttribute("notActivated", "Вы не активировали учётную запись," +
+//                        " в связи с этим, некоторые функции личного кабинета недоступны");
+//            return "redirect:/admin/main";
+//        }
+//        else {
+//            if (user.getActivationCode() != null)
+//                model.addAttribute("notActivated", "Вы не активировали учётную запись," +
+//                        " в связи с этим, некоторые функции личного кабинета недоступны");
+//            List<Order> userOrders = orderService.findAllByCustomerUsername(user.getUsername());
+//            model.addAttribute("orders", userOrders);
+//            model.addAttribute("user", user);
+//            return "mainUser";
+        return authorizationService.getMainPage(user, model);
     }
 
     /**
@@ -86,27 +94,28 @@ public class MainController {
     public String changePasswordAction(@ModelAttribute("old_password") String oldPassword,
                                        @ModelAttribute("password") String newPassword,
                                        Model model) {
-        User user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        if (userService.matches(oldPassword, user.getPassword())) {
-            if (newPassword.length() > 5) {
-                if (oldPassword.equals(newPassword)) {
-                    model.addAttribute("errorMessage", "старый и новый пароли должны отличаться");
-                    return "/changePage";
-                }
-                else {
-                    user.setPassword(newPassword);
-                    userService.save(user);
-                    return "redirect:/main";
-                }
-            }
-            else {
-                model.addAttribute("errorMessage", "пароль не должен быть короче 6 символов");
-                return "/changePage";
-            }
-        }
-        else {
-            model.addAttribute("errorMessage", "неверный старый пароль");
-            return "/changePage";
-        }
+//        User user = authorizationService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+//        if (authorizationService.matches(oldPassword, user.getPassword())) {
+//            if (newPassword.length() > 5) {
+//                if (oldPassword.equals(newPassword)) {
+//                    model.addAttribute("errorMessage", "старый и новый пароли должны отличаться");
+//                    return "/changePage";
+//                }
+//                else {
+//                    user.setPassword(newPassword);
+//                    authorizationService.updatePassword(user);
+//                    return "redirect:/main";
+//                }
+//            }
+//            else {
+//                model.addAttribute("errorMessage", "пароль не должен быть короче 6 символов");
+//                return "/changePage";
+//            }
+//        }
+//        else {
+//            model.addAttribute("errorMessage", "неверный старый пароль");
+//            return "/changePage";
+//        }
+        return authorizationService.changingPassword(oldPassword, newPassword, model);
     }
 }

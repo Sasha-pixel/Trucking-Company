@@ -72,7 +72,7 @@ public class Order {
      * @param targetDate дата выполнения заказа
      * @param truck грузовик
      */
-    public Order(String city, String street, String building, String apartment, String targetDate, Truck truck) {
+    public Order(String city, String street, String building, String apartment, String targetDate , Truck truck) {
         this.city = city;
         this.street = street;
         this.building = building;

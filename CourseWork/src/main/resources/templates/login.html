@@ -2,20 +2,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Spring Security Example </title>
+    <title>login page</title>
+    <style>
+        body {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        input {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+    </style>
 </head>
 <body>
 <div th:if="${param.error}">
-    Неверные имя пользователя или пароль.
+    <span style="color:red">Неверные имя пользователя или пароль.</span>
 </div>
 <div th:if="${param.logout}">
-    Вы вышли из своей учётной записи.
+    <span style="color:red">Вы вышли из своей учётной записи.</span>
 </div>
-<form th:action="@{/login}" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Log In"/></div>
+<!--<div><span style="color:red" th:text = "${authorization_fail}" /></div>-->
+<div><span style="color:red" th:text = "${activate_fail}" /></div>
+<div><span style="color:green" th:text = "${activate_success}" /></div>
+<form action="/login" method="post">
+    <div><label> Имя пользователя: <input type="text" name="username"/> </label></div>
+    <div><label> Пароль: <input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Войти"/></div>
 </form>
-<p>Click <a href="/registration">here</a> to sign up.</p>
+<p>Нажмите <a href="/registration">зедсь</a> для регистрации.</p>
 </body>
 </html>

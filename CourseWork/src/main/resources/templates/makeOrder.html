@@ -4,6 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>OrderPage</title>
+    <style>
+        body {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        input {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+    </style>
 </head>
 <body>
 <script>
@@ -26,12 +34,12 @@
 <p>Если в адресе указан многоквартирный дом, то заполнение поля "Квартира" является обязательным,
     в ином случае поле может остаться незаполенным</p>
 <form action="/makeOrderAction" method="post">
-    <div><label> Населённый пункт<a style="color:red">*</a> : <input type="text" name="city"/> </label> <span style="color:red" th:text = "${city}" /></div>
-    <div><label> Улица<a style="color:red">*</a> : <input type="text" name="street"/> </label> <span style="color:red" th:text = "${street}" /></div>
-    <div><label> Дом<a style="color:red">*</a> : <input type="text" name="building"/> </label> <span style="color:red" th:text = "${building}" /></div>
-    <div><label> Квартира : <input type="text" name="apartment"/> </label></div>
-    <div><label> Дата<a style="color:red">*</a> : <input type="date" name="targetDate" id="targetDate" oninput="getTodaysDate()"/> </label> <span style="color:red" th:text = "${targetDate}" /></div>
-    <div><label> Количесвто грузчиков<a style="color:red">*</a> : <input type="number" min="1" value="1" max="3" required name="numberOfWorkers"/> </label> <span style="color:red" th:text = "${workers}" /></div>
+    <div><label> Населённый пункт<a style="color:red">*</a> : <input type="text" name="city" th:value="${city_paste}"/> </label> <span style="color:red" th:text = "${city}" /></div>
+    <div><label> Улица<a style="color:red">*</a> : <input type="text" name="street" th:value="${street_paste}"/> </label> <span style="color:red" th:text = "${street}" /></div>
+    <div><label> Дом<a style="color:red">*</a> : <input type="text" name="building" th:value="${building_paste}"/> </label> <span style="color:red" th:text = "${building}" /></div>
+    <div><label> Квартира : <input type="number" name="apartment" min="1" th:value="${apartment_paste}"/> </label></div>
+    <div><label> Дата<a style="color:red">*</a> : <input type="date" name="targetDate" id="targetDate" oninput="getTodaysDate()" th:value="${targetDate_paste}"/> </label> <span style="color:red" th:text = "${targetDate}" /></div>
+    <div><label> Количесвто грузчиков<a style="color:red">*</a> : <input type="number" min="1" max="3" required name="numberOfWorkers" th:value="${numberOfWorkers_paste}"/> </label> <span style="color:red" th:text = "${workers}" /></div>
     <div><label> Тип автомобиля<a style="color:red">*</a> :
     <select size="3" name="truckDescription">
         <option value="Жёсткий 4м/2.2м/2м Груз 1500кг" selected="selected">Жёсткий 4м/2.2м/2м Груз 1500кг</option>

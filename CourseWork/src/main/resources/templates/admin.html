@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <title>admin</title>
     <style>
-        table {
+        body {
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        input {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        table {
             text-align: left;
             border-collapse: separate;
             border-spacing: 5px;
@@ -25,14 +30,24 @@
     </style>
 </head>
 <body>
+<span style="color:red" th:text = "${notActivated}" /></div>
+<div th:switch="${user.activationCode}">
+    <div th:case="null">
+        <form action="/changePassword" method="get">
+            <input type="submit" value="сменить пароль"/>
+        </form>
+    </div>
+    <div th:case="*">
+        <form action="/changePassword" method="get">
+            <input type="submit" disabled value="сменить пароль"/>
+        </form>
+    </div>
+</div>
 <form action="/" method="get">
     <input type="submit" value="перейти на домашнюю страницу"/>
 </form>
-<form action="/changePassword" method="get">
-    <input type="submit" value="сменить пароль"/>
-</form>
 <form action="/logout" method="post">
-    <input type="submit" value="Sign Out"/>
+    <input type="submit" value="Выйти из профиля"/>
 </form>
 <div th:switch="${allOrders.size()}">
     <div  th:case="0">
