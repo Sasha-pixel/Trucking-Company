@@ -1,4 +1,4 @@
-# Trucking-Company
+﻿# Trucking-Company
 ## О проекте
 
 Данный проект разрабатывается в учебных целях.
@@ -13,6 +13,7 @@
 - spring-boot-starter-thymeleaf для редактирования HTML страниц
 - spring-boot-starter-security для работы Spring Security
 - postgresql для работы драйвера PostgreSQL
+- spring-boot-starter-mail для организации рассылки сообщений по эл.почте
 ## Сборка и запуск
 - сборка: mvn install
 - запуск: java -jar demo-0.0.1-SNAPSHOT.jar
