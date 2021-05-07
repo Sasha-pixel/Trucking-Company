@@ -7,7 +7,6 @@ import com.example.demo.Model.User;
 import com.example.demo.Services.EmployeeService;
 import com.example.demo.Services.OrderService;
 import com.example.demo.Services.TruckService;
-import com.sun.xml.internal.ws.resources.ModelerMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
