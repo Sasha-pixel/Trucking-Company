@@ -5,22 +5,27 @@
     <title>Spring Security Example </title>
     <style>
         body {
+            background-color: #FF8C00;
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
         }
         input {
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            padding: 5px;
+            margin: 10px;
+            border: 2px solid black;
+            background-color: white;
+            border-radius: 15px;
         }
     </style>
 </head>
 <body>
 <form action="/registrationAction" method="post">
-    <div><label> Username<a style="color:red">*</a> : <input type="text" name="username" th:value="${username_paste}"/> </label><span style="color:red" th:text = "${username}" /></div>
-    <div><label> User Email<a style="color:red">*</a> : <input type="email" name="email" th:value="${email_paste}"/> </label><span style="color:red" th:text = "${email}" /></div>
-    <div><label> Phone Number<a style="color:red">*</a> : <input type="tel" name="phoneNumber" th:value="${phoneNumber_paste}"/> </label><span style="color:red" th:text = "${phoneNumber}" /></div>
-    <div><label> Password<a style="color:red">*</a> : <input type="password" name="password"/> </label><span style="color:red" th:text = "${password}" /></div>
+    <div><label> Имя пользователя<a style="color:red">*</a> : <input type="text" name="username" th:value="${username_paste}"/> </label><span style="color:red" th:text = "${username}" /></div>
+    <div><label> Адрес эл.почты<a style="color:red">*</a> : <input type="email" name="email" th:value="${email_paste}"/> </label><span style="color:red" th:text = "${email}" /></div>
+    <div><label> Номер телефона<a style="color:red">*</a> : <input type="tel" name="phoneNumber" th:value="${phoneNumber_paste}"/> </label><span style="color:red" th:text = "${phoneNumber}" /></div>
+    <div><label> Пароль<a style="color:red">*</a> : <input type="password" name="password"/> </label><span style="color:red" th:text = "${password}" /></div>
     <span>После регистрации на указанный адрес эл.почты будет отправлено письмо, содержащее ссылку для активации учётной записи</span>
     <div><input type="submit" value="Зарегистрироваться"/></div>
-<!--    <span style="color:red" th:text = "${errorMessages}" />-->
 </form>
 </body>
 </html>

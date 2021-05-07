@@ -3,15 +3,14 @@ package com.example.demo.Services;
 import com.example.demo.Model.Employee;
 import com.example.demo.Model.Order;
 import com.example.demo.Model.Truck;
+import com.example.demo.Model.User;
 import com.example.demo.Repositories.OrderRepository;
 import com.example.demo.Validators.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-
 import java.util.List;
 
 /**
@@ -29,12 +28,28 @@ public class OrderService {
     @Autowired
     private OrderValidator orderValidator;
 
+    @Autowired
+    private AuthorizationService authorizationService;
+
+    @Autowired
+    private MailSender mailSender;
+
     /**
      * метод сохранения нового заказа в бд
      *
      * @param order объект заказа
      */
     public void save(Order order) {
+        User user = authorizationService.findByUsername(order.getCustomerUsername());
+        String message = "Здравствуйте, " + order.getCustomerUsername() + ". Вами был оформлен заказ." + '\n' +
+                "Информация о заказе: " + '\n' +
+                "Пункт отправки: " + order.getAddressFrom() + '\n' +
+                "Пункт назначения: " + order.getAddressTo() + '\n' +
+                "Дата оформления заказа: " + order.getCreationDate() + '\n' +
+                "Дата выполнения заказа: " + order.getTargetDate() + '\n' +
+                "Примерная стоимость: " + order.getPrice() + "₽" + '\n' + '\n' +
+                "Спасибо, что выбрали нас!";
+        mailSender.send(user.getEmail(), "Новый заказ", message);
         orderRepository.save(order);
     }
 
@@ -71,14 +86,25 @@ public class OrderService {
      * @param model модель веб-страницы
      */
     public void pasteOrderForm(Order orderForm, int numberOfWorkers, Model model) {
-        model.addAttribute("city_paste", orderForm.getCity());
-        model.addAttribute("street_paste", orderForm.getStreet());
-        model.addAttribute("building_paste", orderForm.getBuilding());
-        model.addAttribute("apartment_paste", orderForm.getApartment());
+        model.addAttribute("addressFrom_paste", orderForm.getAddressFrom());
+        model.addAttribute("addressTo_paste", orderForm.getAddressTo());
+        model.addAttribute("distance_paste", orderForm.getDistance());
+        model.addAttribute("duration_paste", orderForm.getDuration());
         model.addAttribute("targetDate_paste", orderForm.getTargetDate());
         model.addAttribute("numberOfWorkers_paste", numberOfWorkers);
+        model.addAttribute("price_paste", orderForm.getPrice());
     }
 
+    /**
+     * Проверка полей формы оформления заказа
+     * @param orderForm объект заказа
+     * @param workersBuf список сотрудников
+     * @param numberOfWorkers количество сотрудников, требующееся для выполнения заказа
+     * @param truck объект автомобиля
+     * @param bindingResult лист ошибок
+     * @param model модель веб-страницы
+     * @return boolean
+     */
     public boolean validateOrderForm(Order orderForm, List<Employee> workersBuf, int numberOfWorkers, Truck truck, BindingResult bindingResult, Model model) {
         orderValidator.customValidate(orderForm, numberOfWorkers, workersBuf, truck, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -93,5 +119,14 @@ public class OrderService {
         }
         else
             return false;
+    }
+
+    /**
+     * Поиск заказов по подстроке никнейма заказчика
+     * @param username подстрока никнейма заказчика
+     * @return список заказов
+     */
+    public List<Order> searchOrdersByUsername(String username) {
+        return orderRepository.findAllByCustomerUsernameContainingIgnoreCase(username);
     }
 }

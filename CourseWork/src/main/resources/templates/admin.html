@@ -5,10 +5,16 @@
     <title>admin</title>
     <style>
         body {
+            background-color: #FF8C00;
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
         }
         input {
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            padding: 5px;
+            margin: 10px;
+            border: 2px solid black;
+            background-color: white;
+            border-radius: 15px;
         }
         table {
             text-align: left;
@@ -27,7 +33,24 @@
             background: #FF8C00;
             padding: 10px;
         }
+        .hidden {
+            display: none;
+        }
     </style>
+    <script>
+        function onClickUsersButton() {
+            document.getElementById("users").classList.remove("hidden");
+            document.getElementById("employees").classList.add("hidden");
+            document.getElementById("usersButton").disabled=true;
+            document.getElementById("employeesButton").disabled=false;
+        };
+        function onClickEmployeesButton() {
+            document.getElementById("employees").classList.remove("hidden");
+            document.getElementById("users").classList.add("hidden");
+            document.getElementById("employeesButton").disabled=true;
+            document.getElementById("usersButton").disabled=false;
+        };
+    </script>
 </head>
 <body>
 <span style="color:red" th:text = "${notActivated}" /></div>
@@ -47,38 +70,199 @@
     <input type="submit" value="перейти на домашнюю страницу"/>
 </form>
 <form action="/logout" method="post">
-    <input type="submit" value="Выйти из профиля"/>
+    <input type="submit" value="выйти из профиля"/>
 </form>
-<div th:switch="${allOrders.size()}">
-    <div  th:case="0">
-        <h3>У пользователей пока нет заказов.</h3>
+<div th:switch="${user.activationCode}">
+    <div th:case="null">
+        <form action="/admin/addNewEmployeeOrCar" method="get">
+            <input type="submit" value="добавить сотрудника или автомобиль"/>
+        </form>
     </div>
     <div th:case="*">
-        <h3>Заказы:</h3>
-        <table>
-            <thead>
-            <tr>
-                <th>Заказчик</th>
-                <th>Номер заказа</th>
-                <th>Адрес</th>
-                <th>Дата выполнения заказа</th>
-                <th>Дата оформления заказа</th>
-                <th>Работники, назначенные на заказ</th>
-                <th>Номер автомобиля, назначенного на заказ</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="order : ${allOrders}">
-                <td th:text="${order.customerUsername}"></td>
-                <td th:text="${order.id}"></td>
-                <td th:text="${order.city} + ', ул.' + ${order.street} + ', строение ' + ${order.building} + ', кв.' + ${order.apartment}"></td>
-                <td th:text="${order.targetDate}"></td>
-                <td th:text="${order.creationDate}"></td>
-                <td th:text="${order.workers}"></td>
-                <td th:text="${order.truck.carNumber}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <form action="/admin/addNewEmployeeOrCar" method="get">
+            <input type="submit" disabled value="добавить сотрудника или автомобиль"/>
+        </form>
+    </div>
+</div>
+<div th:switch="${isChecking}">
+    <div th:case="users">
+        <form>
+            <div style="display:inline-block">
+                <input type="submit" value="заказы пользователей" id="usersButton" onclick="onClickUsersButton()" disabled/>
+                <input type="submit" value="сотрудники" id="employeesButton" onclick="onClickEmployeesButton()" />
+            </div>
+        </form>
+    </div>
+    <div th:case="employees">
+        <form>
+            <div style="display:inline-block">
+                <input type="submit" value="заказы пользователей" id="usersButton" onclick="onClickUsersButton()"/>
+                <input type="submit" value="сотрудники" id="employeesButton" onclick="onClickEmployeesButton()" disabled/>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:switch="${user.activationCode}">
+    <div th:case="null">
+        <div th:switch="${isChecking}">
+            <div th:case="users">
+                <div id="users">
+                    <form action="/admin/searchByUsername" method="get">
+                        <div style="display:inline-block">
+                            <label>Поиск по заказчику : <input type="text" name="username" th:value="${username}" alt="регистр русских букв имеет значение"/></label>
+                            <input type="submit" value="найти"/>
+                        </div>
+                    </form>
+                    <div th:switch="${allUsersOrders.size()}">
+                        <div  th:case="0">
+                            <h3>У пользователей пока нет заказов.</h3>
+                        </div>
+                        <div th:case="*">
+                            <h3>Заказы:</h3>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Заказчик</th>
+                                    <th>Номер заказа</th>
+                                    <th>Адрес пункта отправки</th>
+                                    <th>Адрес пункта назначения</th>
+                                    <th>Дата выполнения заказа</th>
+                                    <th>Дата оформления заказа</th>
+                                    <th>Работники, назначенные на заказ</th>
+                                    <th>Номер автомобиля, назначенного на заказ</th>
+                                    <th>Примерная цена</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="order : ${allUsersOrders}">
+                                    <td th:text="${order.customerUsername}"></td>
+                                    <td th:text="${order.id}"></td>
+                                    <td th:text="${order.addressFrom}"></td>
+                                    <td th:text="${order.addressTo}"></td>
+                                    <td th:text="${order.targetDate}"></td>
+                                    <td th:text="${order.creationDate}"></td>
+                                    <td th:text="${order.workers}"></td>
+                                    <td th:text="${order.truck.carNumber}"></td>
+                                    <td th:text="${order.price}+'₽'"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="employees" class="hidden">
+                    <form action="/admin/searchEmployee" method="get">
+                        <div style="display:inline-block">
+                            <label>Поиск Сотрудника : <input type="text" name="employee" th:value="${employee}" alt="регистр русских букв имеет значение"/></label>
+                            <input type="submit" value="найти"/>
+                        </div>
+                    </form>
+                    <div th:switch="${allEmployees.size()}">
+                        <div  th:case="0">
+                            <h3>В системе пока нет сотрудников</h3>
+                        </div>
+                        <div th:case="*">
+                            <h3>Сотрудники</h3>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Номер</th>
+                                    <th>Имя и фамилия</th>
+                                    <th>Количество заказов на текущий момент</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="employee : ${allEmployees}">
+                                    <td th:text="${employee.id}"></td>
+                                    <td th:text="${employee.name}"></td>
+                                    <td th:text="${employee.orders.size()}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:case="employees">
+                <div id="users" class="hidden">
+                    <form action="/admin/searchByUsername" method="get">
+                        <div style="display:inline-block">
+                            <label>Поиск по заказчику : <input type="text" name="username" th:value="${username}" alt="регистр русских букв имеет значение"/></label>
+                            <input type="submit" value="найти"/>
+                        </div>
+                    </form>
+                    <div th:switch="${allUsersOrders.size()}">
+                        <div  th:case="0">
+                            <h3>У пользователей пока нет заказов.</h3>
+                        </div>
+                        <div th:case="*">
+                            <h3>Заказы:</h3>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Заказчик</th>
+                                    <th>Номер заказа</th>
+                                    <th>Адрес пункта отправки</th>
+                                    <th>Адрес пункта назначения</th>
+                                    <th>Дата выполнения заказа</th>
+                                    <th>Дата оформления заказа</th>
+                                    <th>Работники, назначенные на заказ</th>
+                                    <th>Номер автомобиля, назначенного на заказ</th>
+                                    <th>Примерная цена</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="order : ${allUsersOrders}">
+                                    <td th:text="${order.customerUsername}"></td>
+                                    <td th:text="${order.id}"></td>
+                                    <td th:text="${order.addressFrom}"></td>
+                                    <td th:text="${order.addressTo}"></td>
+                                    <td th:text="${order.targetDate}"></td>
+                                    <td th:text="${order.creationDate}"></td>
+                                    <td th:text="${order.workers}"></td>
+                                    <td th:text="${order.truck.carNumber}"></td>
+                                    <td th:text="${order.price}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="employees">
+                    <form action="/admin/searchEmployee" method="get">
+                        <div style="display:inline-block">
+                            <label>Поиск Сотрудника : <input type="text" name="employee" th:value="${employee}" alt="регистр русских букв имеет значение"/></label>
+                            <input type="submit" value="найти"/>
+                        </div>
+                    </form>
+                    <div th:switch="${allEmployees.size()}">
+                        <div  th:case="0">
+                            <h3>В системе пока нет сотрудников</h3>
+                        </div>
+                        <div th:case="*">
+                            <h3>Сотрудники</h3>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Номер</th>
+                                    <th>Имя и фамилия</th>
+                                    <th>Количество заказов на текущий момент</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="employee : ${allEmployees}">
+                                    <td th:text="${employee.id}"></td>
+                                    <td th:text="${employee.name}"></td>
+                                    <td th:text="${employee.orders.size()}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 </body>

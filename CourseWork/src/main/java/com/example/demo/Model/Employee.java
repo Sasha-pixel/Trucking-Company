@@ -17,11 +17,8 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "firstname")
-    private String firstName;
-
-    @Column(name = "lastname")
-    private String SecondName;
+    @Column(name = "name")
+    private String name;
 
     @ManyToMany(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
@@ -38,46 +35,44 @@ public class Employee {
 
     /**
      * параметризованный конструктор
-     * @param firstName имя
-     * @param secondName фамилия
-     * @param order заказ
+     * @param name имя и фамилия
+     * @param orders заказ
      */
-    public Employee(String firstName, String secondName, List<Order> order) {
-        this.firstName = firstName;
-        SecondName = secondName;
+    public Employee(String name, List<Order> orders) {
+        this.name = name;
         this.orders = orders;
     }
 
     /**
-     * получение имени
+     * получение номера сотрудника
+     * @return номер сотрудника
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * установка номера сотрудника
+     * @param id номер сотрудника
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
+     * получение имени и фамилии
      * @return firstName
      */
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
     /**
      * установка имени
-     * @param firstName имя
+     * @param name имя и фамилия
      */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * получение фамилии
-     * @return secondName - фамилия
-     */
-    public String getSecondName() {
-        return SecondName;
-    }
-
-    /**
-     * установка фамилии
-     * @param secondName фамилия
-     */
-    public void setSecondName(String secondName) {
-        SecondName = secondName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -102,6 +97,6 @@ public class Employee {
      */
     @Override
     public String toString() {
-        return getFirstName() + " " + getSecondName();
+        return getName();
     }
 }

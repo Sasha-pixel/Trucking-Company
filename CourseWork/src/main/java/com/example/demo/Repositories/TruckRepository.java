@@ -19,4 +19,11 @@ public interface TruckRepository extends CrudRepository<Truck, Long> {
      * @return лист грузовиков с указанной характеристикой
      */
     List<Truck> findAllByDescription(String description);
+
+    /**
+     * Поиск грузовиков по номеру
+     * @param carNumber автомобильный номер
+     * @return грузовик с указанным номером
+     */
+    Truck findByCarNumber(String carNumber);
 }

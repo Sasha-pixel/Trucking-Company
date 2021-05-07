@@ -55,21 +55,26 @@ public class OrderValidator implements Validator {
 //        List<Employee> workers = employeeService.findAll();
 //        List<Employee> workersBuf = employeeService.setWorkersToOrder(order, workers);
         if(numberOfWorkers > workersBuf.size()) {
-            errors.rejectValue("workers", "Не хватает свободных грузчиков, попробуйте изменить дату или уменьшить количество требующихся грузчиков");
+            errors.rejectValue("workers", "Не хватает свободных грузчиков");
         }
 //        else {
 //            order.setWorkers(workersBuf.subList(0, numberOfWorkers));
 //        }
 //        List<Truck> trucks = truckService.findAllByDescription(truckDescription);
         if (truck == null) {
-            errors.rejectValue("truck", "Не хватает свободных автомобилей, попробуйте изменить дату или сменить тип автомобиля");
+            errors.rejectValue("truck", "Не хватает свободных автомобилей");
         }
 //        else {
 //            order.setTruck(truckService.setTruckToOrder(order, trucks));
 //        }
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "city", "обязательно к заполнению");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "street", "обязательно к заполнению");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "building", "обязательно к заполнению");
+//        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "city", "обязательно к заполнению");
+//        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "street", "обязательно к заполнению");
+//        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "building", "обязательно к заполнению");
+//        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "targetDate", "обязательно к заполнению");
+        if (order.getAddressFrom().isEmpty() || order.getAddressTo().isEmpty())
+            errors.rejectValue("addressFrom", "обязательно к заполнению");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "targetDate", "обязательно к заполнению");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "distance", "обязательно к заполнению");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "duration", "обязательно к заполнению");
     }
 }

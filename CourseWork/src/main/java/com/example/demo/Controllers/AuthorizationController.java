@@ -10,8 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-
 /**
  * Контроллер, отвечающий за регистрацию и атворизацию
  *
@@ -31,28 +29,8 @@ public class AuthorizationController {
      */
     @GetMapping("/login")
     public String authorizationPage() {
-//        if (authorizationService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()) != null)
-//            return "redirect:/main";
-//        return "login";
         return authorizationService.checkAuthority();
     }
-
-    //@GetMapping("/createCookie")
-
-
-//    @PostMapping("/registrationAction")
-//    public String registrationPage(@PathParam("username") String username,
-//                                   @PathParam("email") String email,
-//                                   @PathParam("phoneNumber") String phoneNumber,
-//                                   @PathParam("password") String password) {
-//        User user = new User(username, email, password, phoneNumber);
-//        List<User> userList = userRepository.findAllByUsername(username);
-//        userList.addAll(userRepository.findAllByEmail(email));
-//        userList.addAll(userRepository.findByPhoneNumber(phoneNumber));
-//        if (userList.isEmpty())
-//            userRepository.save(user);
-//        return "redirect:/login";
-//    }
 
     /**
      *Возврат страницы регистрации
@@ -76,13 +54,6 @@ public class AuthorizationController {
      */
     @PostMapping("/registrationAction")
     public String registrationAction(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
-//        if (authorizationService.validateUserForm(userForm, bindingResult, model)) {
-//            authorizationService.pasteUserForm(userForm, model);
-//            return "registration";
-//        }
-//        userForm.setRoles(Collections.singleton(Role.USER));
-//        authorizationService.save(userForm);
-//        return "redirect:/main";
         return authorizationService.save(userForm, bindingResult, model);
     }
 

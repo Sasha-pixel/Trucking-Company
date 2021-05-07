@@ -21,17 +21,17 @@ public class Order {
     @Column(name = "customer_username")
     private String customerUsername;
 
-    @Column(name = "city")
-    private String city;
+    @Column(name = "address_from")
+    private String addressFrom;
 
-    @Column(name = "street")
-    private String street;
+    @Column(name = "address_to")
+    private String addressTo;
 
-    @Column(name = "building")
-    private String building;
+    @Column(name = "distance")
+    private String distance;
 
-    @Column(name = "apartment")
-    private String apartment;
+    @Column(name = "duration")
+    private String duration;
 
     @Column(name = "target_date")
     private String targetDate;
@@ -57,6 +57,9 @@ public class Order {
     @JoinColumn(name = "truck_id")
     private Truck truck;
 
+    @Column(name = "price")
+    private int price;
+
     /**
      * пустой конструктор
      */
@@ -64,56 +67,35 @@ public class Order {
     }
 
     /**
-     * параметризованный конструктор v1
-     * @param city город
-     * @param street улица
-     * @param building  строение
-     * @param apartment квартира
-     * @param targetDate дата выполнения заказа
-     * @param truck грузовик
-     */
-    public Order(String city, String street, String building, String apartment, String targetDate , Truck truck) {
-        this.city = city;
-        this.street = street;
-        this.building = building;
-        this.apartment = apartment;
-        this.targetDate = targetDate;
-        this.truck = truck;
-    }
-
-    /**
-     * параметризованный конструктор v2
-     * @param id id заказа
+     * параметризованный конструктор
      * @param customerUsername никнейм заказчика
-     * @param city город
-     * @param street улица
-     * @param building строение
-     * @param apartment квартира
+     * @param addressFrom адрес пункта отправки
+     * @param addressTo адрес пункта назначения
      * @param targetDate дата выполнения заказа
-     * @param creationDate дата создания заказа
-     * @param workers сотрудники
-     * @param truck грузовик
+     * @param creationDate дата оформления заказа
+     * @param workers список сотрудников
+     * @param truck автомобиль
      */
-    public Order(Long id,
-                 String customerUsername,
-                 String city,
-                 String street,
-                 String building,
-                 String apartment,
+    public Order(String customerUsername,
+                 String addressFrom,
+                 String addressTo,
                  String targetDate,
                  Date creationDate,
+                 String distance,
+                 String duration,
                  List<Employee> workers,
-                 Truck truck) {
-        this.id = id;
+                 Truck truck,
+                 int price) {
         this.customerUsername = customerUsername;
-        this.city = city;
-        this.street = street;
-        this.building = building;
-        this.apartment = apartment;
+        this.addressFrom = addressFrom;
+        this.addressTo = addressTo;
         this.targetDate = targetDate;
         this.creationDate = creationDate;
+        this.distance = distance;
+        this.duration = duration;
         this.workers = workers;
         this.truck = truck;
+        this.price = price;
     }
 
     /**
@@ -149,67 +131,35 @@ public class Order {
     }
 
     /**
-     * получение города
-     * @return city - город
+     * получение адреса пункта отправки
+     * @return адрес пункта отправки
      */
-    public String getCity() {
-        return city;
+    public String getAddressFrom() {
+        return addressFrom;
     }
 
     /**
-     * установка города
-     * @param city город
+     * установка адреса пункта отправки
+     * @param addressFrom адрес пункта отправки
      */
-    public void setCity(String city) {
-        this.city = city;
+    public void setAddressFrom(String addressFrom) {
+        this.addressFrom = addressFrom;
     }
 
     /**
-     * получение улицы
-     * @return street - улица
+     * получение адреса пункта назначения
+     * @return дрес пункта назначения
      */
-    public String getStreet() {
-        return street;
+    public String getAddressTo() {
+        return addressTo;
     }
 
     /**
-     * установка улицы
-     * @param street улица
+     * установка адреса пункта назначения
+     * @param addressTo
      */
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    /**
-     * олучение строеня
-     * @return building - строение
-     */
-    public String getBuilding() {
-        return building;
-    }
-
-    /**
-     * установка строения
-     * @param building строение
-     */
-    public void setBuilding(String building) {
-        this.building = building;
-    }
-
-    /**
-     * получение квартиры
-     * @return apartment - квартира
-     */
-    public String getApartment() {
-        return apartment;
-    }
-
-    /**
-     * установка квартиры
-     * @param apartment квартира
-     */
-    public void setApartment(String apartment) {
-        this.apartment = apartment;
+    public void setAddressTo(String addressTo) {
+        this.addressTo = addressTo;
     }
 
     /**
@@ -242,6 +192,38 @@ public class Order {
      */
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    /**
+     * получение длительности перевозки
+     * @return длительность перевозки
+     */
+    public String getDistance() {
+        return distance;
+    }
+
+    /**
+     * установка длительности перевозки
+     * @param distance длительность перевозки
+     */
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    /**
+     * получение продолжительности перевозки
+     * @return продолжительность перевозки
+     */
+    public String getDuration() {
+        return duration;
+    }
+
+    /**
+     * установка продолжительности перевозки
+     * @param duration продолжительность перевозки
+     */
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
     /**
@@ -279,5 +261,21 @@ public class Order {
      */
     public void setTruck(Truck truck) {
         this.truck = truck;
+    }
+
+    /**
+     * получение примерной стоимости выполнения заказа
+     * @return стоимость выполнения заказа
+     */
+    public int getPrice() {
+        return price;
+    }
+
+    /**
+     * установка примерной стоимости выполнения заказа
+     * @param price примерная стоимость выполнения заказа
+     */
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

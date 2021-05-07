@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -66,68 +65,12 @@ public class OrderController {
         List<Employee> workersBuf = employeeService.setWorkersToOrder(orderForm, workers);
         List<Truck> trucks = truckService.findAllByDescription(truckDescription);
         Truck truck = truckService.setTruckToOrder(orderForm, trucks);
-//        orderValidator.validate(orderForm, bindingResult);
-//        if (bindingResult.hasErrors()) {
-//            for (Object object : bindingResult.getAllErrors()) {
-//                if (object instanceof FieldError) {
-//                    FieldError fieldError = (FieldError)object;
-//                    model.addAttribute(fieldError.getField(), fieldError.getCode());
-//                }
-//            }
-//            orderService.pasteOrderForm(orderForm, numberOfWorkers, model);
-//            return "makeOrder";
-//        }
         if (orderService.validateOrderForm(orderForm, workersBuf, numberOfWorkers, truck, bindingResult, model)) {
             orderService.pasteOrderForm(orderForm, numberOfWorkers, model);
             return "makeOrder";
         }
-        if (orderForm.getApartment().isEmpty())
-            orderForm.setApartment("-");
         orderForm.setCustomerUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         orderForm.setCreationDate(new Date());
-//        List<Employee> workers = employeeService.findAll();
-//        List<Employee> workersBuf = new ArrayList<>();
-//        boolean flag;
-//        for (Employee worker : workers) {
-//            flag = true;
-//            if (worker.getOrders().isEmpty())
-//                workersBuf.add(worker);
-//            else {
-//                for (Order order : worker.getOrders()) {
-//                    if (order.getTargetDate().equals(orderForm.getTargetDate()))
-//                        flag = false;
-//                }
-//                if (flag)
-//                    workersBuf.add(worker);
-//            }
-//        }
-//        List<Employee> workersBuf = employeeService.setWorkersToOrder(orderForm, workers);
-//        if(numberOfWorkers > workersBuf.size()) {
-//            model.addAttribute("workers", "Не хватает свободных грузчиков, попробуйте изменить дату или уменьшить количество требующихся грузчиков");
-//            return "makeOrder";
-//        }
-//        List<Truck> trucks = truckService.findAllByDescription(truckDescription);
-//        if (trucks.isEmpty()) {
-//            model.addAttribute("truck", "Не хватает свободных автомобилей, попробуйте изменить дату или сменить тип автомобиля");
-//            return "makeOrder";
-//        }
-//        for (Truck truck : trucks) {
-//            flag = true;
-//            if (truck.getOrders().isEmpty()) {
-//                orderForm.setTruck(truck);
-//                break;
-//            }
-//            else {
-//                for (Order order : truck.getOrders()) {
-//                    if (order.getTargetDate().equals(orderForm.getTargetDate()))
-//                        flag = false;
-//                }
-//                if (flag) {
-//                    orderForm.setTruck(truck);
-//                    break;
-//                }
-//            }
-//        }
         orderForm.setTruck(truck);
         orderForm.setWorkers(workersBuf.subList(0, numberOfWorkers));
         orderService.save(orderForm);

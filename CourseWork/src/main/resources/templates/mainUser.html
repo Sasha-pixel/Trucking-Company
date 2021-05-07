@@ -6,10 +6,16 @@
     <title>main page</title>
     <style>
         body {
-                font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            background-color: #FF8C00;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
         }
         input {
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            padding: 5px;
+            margin: 10px;
+            border: 2px solid black;
+            background-color: white;
+            border-radius: 15px;
         }
         table {
             text-align: left;
@@ -42,22 +48,26 @@
             <thead>
                 <tr>
                     <th>Номер заказа</th>
-                    <th>Адрес</th>
+                    <th>Адрес пункта отправки</th>
+                    <th>Адрес пункта назначения</th>
                     <th>Дата выполнения заказа</th>
                     <th>Дата оформления заказа</th>
                     <th>Работники, назначенные на заказ</th>
                     <th>Характеристика автомобиля, назначенного на заказ</th>
+                    <th>Примерная цена</th>
                     <th>Отменить заказ</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="order : ${orders}">
                     <td th:text="${order.id}"></td>
-                    <td th:text="${order.city} + ', ул.' + ${order.street} + ', строение ' + ${order.building} + ', кв.' + ${order.apartment}"></td>
+                    <td th:text="${order.addressFrom}"></td>
+                    <td th:text="${order.addressTo}"></td>
                     <td th:text="${order.targetDate}"></td>
                     <td th:text="${order.creationDate}"></td>
                     <td th:text="${order.workers}"></td>
                     <td th:text="${order.truck.description}"></td>
+                    <td th:text="${order.price}+'₽'"></td>
                     <td><a th:href="@{deleteOrder/{id}(id=${order.id})}">отменить заказ</a></td>
                 </tr>
             </tbody>
@@ -87,7 +97,7 @@
     <input type="submit" value="перейти на домашнюю страницу"/>
 </form>
 <form action="/logout" method="post">
-    <input type="submit" value="Выйти из профиля"/>
+    <input type="submit" value="выйти из профиля"/>
 </form>
 </body>
 </html>
