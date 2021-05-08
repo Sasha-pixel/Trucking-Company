@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,7 +36,8 @@ public class MainController {
      * @return a {@link java.lang.String} object.
      */
     @GetMapping("/")
-    public String homePage() {
+    public String homePage(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
         return "home";
     }
 
@@ -59,7 +61,8 @@ public class MainController {
      * @return страницу для смены личного кабинета
      */
     @GetMapping("/changePassword")
-    public String changePassword() {
+    public String changePassword(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
         return "changePage";
     }
 

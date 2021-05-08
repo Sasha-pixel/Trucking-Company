@@ -4,6 +4,7 @@ import com.example.demo.Model.User;
 import com.example.demo.Roles.Role;
 import com.example.demo.Services.AuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,21 +26,24 @@ public class AuthorizationController {
     /**
      * Возврат страницы авторизации
      *
+     * @param user объект авторизированного пользователя
      * @return страницу авторизации
      */
     @GetMapping("/login")
-    public String authorizationPage() {
-        return authorizationService.checkAuthority();
+    public String authorizationPage(@AuthenticationPrincipal User user, Model model) {
+        return authorizationService.checkAuthority(user, model);
     }
 
     /**
      *Возврат страницы регистрации
      *
+     * @param user объект авторизированного пользовател
      * @param model a {@link org.springframework.ui.Model} object.
      * @return страницу регистрации
      */
     @GetMapping("/registration")
-    public String registration(Model model) {
+    public String registration(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
         model.addAttribute("userForm", new User());
         return "registration";
     }

@@ -68,10 +68,14 @@ public class AuthorizationService {
 
     /**
      * Метод для получения страницы авторизации
+     *
+     * @param user объект авторизированного пользователя
+     * @param model модель веб-страницы
      * @return страницу авторизации или перенаправление на страницу личного кабинета
      */
-    public String checkAuthority() {
-        User user = findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    public String checkAuthority(User user, Model model) {
+        model.addAttribute("user", user);
+//        User user = findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         if (user != null)
             return "redirect:/main";
         return "login";
@@ -238,6 +242,7 @@ public class AuthorizationService {
             if (newPassword.length() > 5) {
                 if (oldPassword.equals(newPassword)) {
                     model.addAttribute("errorMessage", "старый и новый пароли должны отличаться");
+                    model.addAttribute("user", user);
                     return "/changePage";
                 }
                 else {
@@ -248,11 +253,13 @@ public class AuthorizationService {
             }
             else {
                 model.addAttribute("errorMessage", "пароль не должен быть короче 6 символов");
+                model.addAttribute("user", user);
                 return "/changePage";
             }
         }
         else {
             model.addAttribute("errorMessage", "неверный старый пароль");
+            model.addAttribute("user", user);
             return "/changePage";
         }
     }

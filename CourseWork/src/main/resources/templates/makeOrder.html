@@ -5,14 +5,87 @@
     <meta charset="UTF-8">
     <title>OrderPage</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Suez+One&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
         body {
             background-color: #FF8C00;
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
         }
-        input {
+        header {
+            width: 100%;
+            background: black;
+        }
+        #logo {
+            color: white;
+            font-family: 'Suez One', serif;
+            font-size: 35px;
+            float: left;
+            margin-left: 10px;
+        }
+        header #menu {
+            text-align: center;
+            font-size: 15px;
+        }
+        header #menu a {
+            color: white;
+            text-decoration: none;
+            padding: 4px 30px;
+            line-height: 50px;
+        }
+        header #menu span {
+            color: white;
+            text-decoration: none;
+            padding: 4px;
+            line-height: 50px;
+        }
+        header #enter {
+            float: right;
+        }
+        .dropbtn {
+            margin-right: 15px;
+            background-color: black;
+            /*border-radius: 10px;*/
+            /*float: right;*/
+            color: white;
+            padding: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            margin-right: 15px;
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 200px;
+            overflow: auto;
+            right: 0;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: 0.5s;
+        }
+
+        .show {display: block;}
+
+        .content {
+            width: 96%;
+            margin-top: 10px;
+            margin-left:2%;
+        }
+        input, select {
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             padding: 5px;
-            margin: 10px;
+            margin: 10px 0px;
             border: 2px solid black;
             background-color: white;
             border-radius: 15px;
@@ -82,26 +155,55 @@
                 }
             );
         }
-
+    </script>
+    <script>
+        function getTodaysDate(){
+            date = new Date();
+            day = date.getDate();
+            month = date.getMonth() + 1;
+            month2 = date.getMonth() + 4;
+            year = date.getFullYear();
+            if (month < 10) month = "0" + month;
+            if (month2 < 10) month2 = "0" + month2;
+            if (day < 10) day = "0" + day;
+            today = year + "-" + month + "-" + day;
+            today2 = year + "-" + month2 + "-" + day;
+            document.getElementById('targetDate').setAttribute('min', today);
+            document.getElementById('targetDate').setAttribute('max', today2);
+        }
+    </script>
+    <script>
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
     </script>
 </head>
 <body>
-<script>
-    function getTodaysDate(){
-        date = new Date();
-        day = date.getDate();
-        month = date.getMonth() + 1;
-        month2 = date.getMonth() + 4;
-        year = date.getFullYear();
-        if (month < 10) month = "0" + month;
-        if (month2 < 10) month2 = "0" + month2;
-        if (day < 10) day = "0" + day;
-        today = year + "-" + month + "-" + day;
-        today2 = year + "-" + month2 + "-" + day;
-        document.getElementById('targetDate').setAttribute('min', today);
-        document.getElementById('targetDate').setAttribute('max', today2);
-    }
-</script>
+<header>
+    <div id="logo">
+        <span>Donald Truck</span>
+    </div>
+    <div id="menu">
+        <a href="/">Главная страница</a>
+        <a href="/main">Личный кабинет</a>
+        <div id="enter">
+            <div th:switch="${user}">
+                <div th:case="null">
+                    <a href="/login">Войти</a>/<a href="/registration">Регистрация</a>
+                </div>
+                <div th:case="*">
+                    <div id="navbar">
+                        <span onclick="myFunction()" class="dropbtn" th:text="${user.username}"/>
+                        <ul id="myDropdown" class="dropdown-content">
+                            <li><a href="/logout">Выйти</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="content">
 <h1>Готовы принять ваш заказ!</h1>
 <div class="order-form">
     <form action="/makeOrderAction" method="post">
@@ -115,9 +217,10 @@
         <div><label> Количесвто грузчиков<a style="color:red">*</a> : <input type="number" min="1" max="3" required id="numberOfWorkers" name="numberOfWorkers" th:value="${numberOfWorkers_paste}"/> </label> <span style="color:red" th:text = "${workers}" /></div>
         <div><label> Тип автомобиля<a style="color:red">*</a> :
         <select name="truckDescription">
-            <option value="Жёсткий 4м/2.2м/2м Груз 1500кг" selected="selected">Жёсткий 4м/2.2м/2м Груз 1500кг</option>
+            <option value="Жёсткий 4м/2.2м/2м Груз 1500кг" selected>Жёсткий 4м/2.2м/2м Груз 1500кг</option>
             <option value="Тент 3м/1.5м/2м Груз 950кг">Тент 3м/1.5м/2м Груз 950кг</option>
             <option value="Жёсткий 1.6м/1м/1м Груз 500кг">Жёсткий 1.6м/1м/1м Груз 500кг</option>
+            <option value="Жёсткий 13.6м/2.5м/2.45м Груз 20т">Жёсткий 13.6м/2.5м/2.45м Груз 20т</option>
         </select>
         </label> <span style="color:red" th:text = "${truck}" /></div>
         <div><label> Примерная цена<a style="color:red">*</a> : <input type="text" name="price" id="price" th:value="${price_paste}" readonly/> </label> <span style="color:red" th:text = "${price}" /></div>
@@ -128,6 +231,7 @@
             async
     ></script>
     <div id="map"></div>
+</div>
 </div>
 </body>
 </html>

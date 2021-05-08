@@ -62,7 +62,8 @@ public class AdminController {
     }
 
     @GetMapping("addNewEmployeeOrCar")
-    public String getPageAddNewEmployeeOrCar(Model model) {
+    public String getPageAddNewEmployeeOrCar(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
         model.addAttribute("car-form", new Truck());
         model.addAttribute("employee-form", new Employee());
         return "newEmployeeOrCar";
@@ -71,16 +72,18 @@ public class AdminController {
     @PostMapping("/addCar")
     public String addNewCar(@ModelAttribute("car-form") Truck truck,
                             @RequestParam("truckDescription") String truckDescription,
+                            @AuthenticationPrincipal User user,
                             BindingResult bindingResult,
                             Model model) {
         truck.setDescription(truckDescription);
-        return adminService.addingCar(truck, bindingResult, model);
+        return adminService.addingCar(truck, user, bindingResult, model);
     }
 
     @PostMapping("/addEmployee")
     public String addNewEmployee(@ModelAttribute("employee-form") Employee employee,
-                            BindingResult bindingResult,
-                            Model model) {
-        return adminService.addingEmployee(employee, bindingResult, model);
+                                 @AuthenticationPrincipal User user,
+                                 BindingResult bindingResult,
+                                 Model model) {
+        return adminService.addingEmployee(employee, user, bindingResult, model);
     }
 }

@@ -3,11 +3,13 @@ package com.example.demo.Controllers;
 import com.example.demo.Model.Employee;
 import com.example.demo.Model.Order;
 import com.example.demo.Model.Truck;
+import com.example.demo.Model.User;
 import com.example.demo.Services.EmployeeService;
 import com.example.demo.Services.OrderService;
 import com.example.demo.Services.TruckService;
 import com.example.demo.Validators.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +45,8 @@ public class OrderController {
      * @return страница с формой заказа
      */
     @GetMapping("/makeOrder")
-    public String makeOrder(Model model) {
+    public String makeOrder(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
         model.addAttribute("orderForm", new Order());
         return "makeOrder";
     }
@@ -60,6 +63,7 @@ public class OrderController {
     public String makeOrderAction(@ModelAttribute Order orderForm,
                                   @RequestParam("truckDescription") String truckDescription,
                                   @RequestParam("numberOfWorkers") int numberOfWorkers,
+                                  @AuthenticationPrincipal User user,
                                   BindingResult bindingResult, Model model) {
         List<Employee> workers = employeeService.findAll();
         List<Employee> workersBuf = employeeService.setWorkersToOrder(orderForm, workers);
@@ -67,6 +71,7 @@ public class OrderController {
         Truck truck = truckService.setTruckToOrder(orderForm, trucks);
         if (orderService.validateOrderForm(orderForm, workersBuf, numberOfWorkers, truck, bindingResult, model)) {
             orderService.pasteOrderForm(orderForm, numberOfWorkers, model);
+            model.addAttribute("user", user);
             return "makeOrder";
         }
         orderForm.setCustomerUsername(SecurityContextHolder.getContext().getAuthentication().getName());

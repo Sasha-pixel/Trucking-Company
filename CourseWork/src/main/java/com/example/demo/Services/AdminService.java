@@ -114,13 +114,14 @@ public class AdminService {
      * @param model модель веб-страницы
      * @return перенаправление на страницу администатора или возврат страницы добавления новых автомобилей и сотрудников
      */
-    public String addingCar(Truck truck, BindingResult bindingResult, Model model) {
+    public String addingCar(Truck truck, User user, BindingResult bindingResult, Model model) {
         if (!truckService.validateTruck(truck, bindingResult, model)) {
             truckService.save(truck);
             return "redirect:/admin/main";
         }
         else {
             model.addAttribute("carNumber_paste", truck.getCarNumber());
+            model.addAttribute("user", user);
             return "newEmployeeOrCar";
         }
     }
@@ -132,13 +133,14 @@ public class AdminService {
      * @param model модель веб-страницы
      * @return перенаправление на страницу администатора или возврат страницы добавления новых автомобилей и сотрудников
      */
-    public String addingEmployee(Employee employee, BindingResult bindingResult, Model model) {
+    public String addingEmployee(Employee employee, User user, BindingResult bindingResult, Model model) {
         if (!employeeService.validateEmployee(employee, bindingResult, model)) {
             employeeService.save(employee);
             return "redirect:/admin/main";
         }
         else {
             model.addAttribute("name_paste", employee.getName());
+            model.addAttribute("user", user);
             return "newEmployeeOrCar";
         }
     }

@@ -47,7 +47,7 @@ public class OrderService {
                 "Пункт назначения: " + order.getAddressTo() + '\n' +
                 "Дата оформления заказа: " + order.getCreationDate() + '\n' +
                 "Дата выполнения заказа: " + order.getTargetDate() + '\n' +
-                "Примерная стоимость: " + order.getPrice() + "₽" + '\n' + '\n' +
+                "Примерная стоимость: " + order.getPrice() + " руб." + '\n' + '\n' +
                 "Спасибо, что выбрали нас!";
         mailSender.send(user.getEmail(), "Новый заказ", message);
         orderRepository.save(order);

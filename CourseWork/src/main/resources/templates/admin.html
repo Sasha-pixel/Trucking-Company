@@ -4,14 +4,87 @@
     <meta charset="UTF-8">
     <title>admin</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Suez+One&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
         body {
             background-color: #FF8C00;
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
         }
+        header {
+            width: 100%;
+            background: black;
+        }
+        #logo {
+            color: white;
+            font-family: 'Suez One', serif;
+            font-size: 35px;
+            float: left;
+            margin-left: 10px;
+        }
+        header #menu {
+            text-align: center;
+            font-size: 15px;
+        }
+        header #menu a {
+            color: white;
+            text-decoration: none;
+            padding: 4px 30px;
+            line-height: 50px;
+        }
+        header #menu span {
+            color: white;
+            text-decoration: none;
+            padding: 4px;
+            line-height: 50px;
+        }
+        header #enter {
+            float: right;
+        }
+        .dropbtn {
+            margin-right: 15px;
+            background-color: black;
+            /*border-radius: 10px;*/
+            /*float: right;*/
+            color: white;
+            padding: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            margin-right: 15px;
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 200px;
+            overflow: auto;
+            right: 0;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: 0.5s;
+        }
+
+        .show {display: block;}
+
+        .content {
+            margin-top: 10px;
+            width: 96%;
+            margin-left:2%;
+        }
         input {
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             padding: 5px;
-            margin: 10px;
+            margin: 10px 0px;
             border: 2px solid black;
             background-color: white;
             border-radius: 15px;
@@ -22,8 +95,6 @@
             border-spacing: 5px;
             background: #FFD700;
             color: black;
-            border: 16px solid #FF8C00;
-            border-radius: 20px;
         }
         th {
             font-size: 18px;
@@ -51,27 +122,40 @@
             document.getElementById("usersButton").disabled=false;
         };
     </script>
+    <script>
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+    </script>
 </head>
 <body>
-<span style="color:red" th:text = "${notActivated}" /></div>
-<div th:switch="${user.activationCode}">
-    <div th:case="null">
-        <form action="/changePassword" method="get">
-            <input type="submit" value="сменить пароль"/>
-        </form>
+<header>
+    <div id="logo">
+        <span>Donald Truck</span>
     </div>
-    <div th:case="*">
-        <form action="/changePassword" method="get">
-            <input type="submit" disabled value="сменить пароль"/>
-        </form>
+    <div id="menu">
+        <a href="/">Главная страница</a>
+        <a href="/main">Личный кабинет</a>
+        <div id="enter">
+            <div th:switch="${user}">
+                <div th:case="null">
+                    <a href="/login">Войти</a>/<a href="/registration">Регистрация</a>
+                </div>
+                <div th:case="*">
+                    <div id="navbar">
+                        <span onclick="myFunction()" class="dropbtn" th:text="${user.username}"/>
+                        <ul id="myDropdown" class="dropdown-content">
+                            <li><a href="/changePassword">Сменить пароль</a></li>
+                            <li><a href="/logout">Выйти</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<form action="/" method="get">
-    <input type="submit" value="перейти на домашнюю страницу"/>
-</form>
-<form action="/logout" method="post">
-    <input type="submit" value="выйти из профиля"/>
-</form>
+</header>
+<span style="color:red" th:text = "${notActivated}" />
+<div class="content">
 <div th:switch="${user.activationCode}">
     <div th:case="null">
         <form action="/admin/addNewEmployeeOrCar" method="get">
@@ -153,7 +237,7 @@
                 <div id="employees" class="hidden">
                     <form action="/admin/searchEmployee" method="get">
                         <div style="display:inline-block">
-                            <label>Поиск Сотрудника : <input type="text" name="employee" th:value="${employee}" alt="регистр русских букв имеет значение"/></label>
+                            <label>Поиск сотрудника : <input type="text" name="employee" th:value="${employee}" alt="регистр русских букв имеет значение"/></label>
                             <input type="submit" value="найти"/>
                         </div>
                     </form>
@@ -231,7 +315,7 @@
                 <div id="employees">
                     <form action="/admin/searchEmployee" method="get">
                         <div style="display:inline-block">
-                            <label>Поиск Сотрудника : <input type="text" name="employee" th:value="${employee}" alt="регистр русских букв имеет значение"/></label>
+                            <label>Поиск сотрудника : <input type="text" name="employee" th:value="${employee}" alt="регистр русских букв имеет значение"/></label>
                             <input type="submit" value="найти"/>
                         </div>
                     </form>
@@ -262,8 +346,8 @@
                 </div>
             </div>
         </div>
-
     </div>
+</div>
 </div>
 </body>
 </html>
