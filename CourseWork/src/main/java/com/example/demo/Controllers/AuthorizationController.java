@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Контроллер, отвечающий за регистрацию и атворизацию
  *
@@ -30,8 +32,8 @@ public class AuthorizationController {
      * @return страницу авторизации
      */
     @GetMapping("/login")
-    public String authorizationPage(@AuthenticationPrincipal User user, Model model) {
-        return authorizationService.checkAuthority(user, model);
+    public String authorizationPage(@RequestParam(required = false) String error, @AuthenticationPrincipal User user, Model model, HttpServletRequest request) {
+        return authorizationService.checkAuthority(error, user, model, request);
     }
 
     /**

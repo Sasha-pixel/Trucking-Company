@@ -137,17 +137,18 @@
 </header>
 <div class="content">
     <div class="form">
-        <div th:if="${param.error}">
-            <span style="color:red">Неверные имя пользователя или пароль.</span>
-        </div>
-        <div th:if="${param.logout}">
-            <span style="color:red">Вы вышли из своей учётной записи.</span>
-        </div>
+<!--        <div th:if="${param.error}">-->
+<!--            <span style="color:red">Неверные имя пользователя или пароль.</span>-->
+<!--        </div>-->
+<!--        <div th:if="${param.logout}">-->
+<!--            <span style="color:red">Вы вышли из своей учётной записи.</span>-->
+<!--        </div>-->
+        <div><span style="color:red" th:text = "${IncorrectData}" /></div>
         <div><span style="color:red" th:text = "${activate_fail}" /></div>
         <div><span style="color:green" th:text = "${activate_success}" /></div>
         <form action="/login" method="post">
-            <div><label> <input type="text" name="username" placeholder="Имя пользователя"/> </label></div>
-            <div><label> <input type="password" name="password" placeholder="Пароль"/> </label></div>
+            <div><label> <input type="text" name="username" placeholder="Имя пользователя" th:value="${username}"/> </label></div>
+            <div><label> <input type="password" name="password" placeholder="Пароль" th:value="${password}"/> </label></div>
             <div><input type="submit" value="Войти"/></div>
         </form>
         <a href="/registration">Зарегистрироваться</a></p>

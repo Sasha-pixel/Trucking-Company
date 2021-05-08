@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.List;
@@ -73,11 +74,23 @@ public class AuthorizationService {
      * @param model модель веб-страницы
      * @return страницу авторизации или перенаправление на страницу личного кабинета
      */
-    public String checkAuthority(User user, Model model) {
+    public String checkAuthority(String error, User user, Model model, HttpServletRequest request) {
         model.addAttribute("user", user);
-//        User user = findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         if (user != null)
             return "redirect:/main";
+        if(error != null){
+            model.addAttribute("IncorrectData", "Неправильный логин или пароль");
+        }
+        else{
+            Cookie[] cookies = request.getCookies();
+            if(cookies!=null)
+                for (Cookie c: cookies){
+                    if(c.getName().equals("password"))
+                        model.addAttribute("password", c.getValue());
+                    if(c.getName().equals("login"))
+                        model.addAttribute("username", c.getValue());
+                }
+        }
         return "login";
     }
 
