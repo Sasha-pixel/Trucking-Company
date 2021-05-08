@@ -29,7 +29,7 @@
 <body>
 <div class="car-form">
     <h1>Добавить автомобиль</h1>
-    <form action="/admin/addCar" method="post">
+    <div action="/admin/addCar" method="post">
         <div><label> Тип автомобиля<a style="color:red">*</a> :
         <select name="truckDescription">
             <option value="Жёсткий 4м/2.2м/2м Груз 1500кг" selected="selected">Жёсткий 4м/2.2м/2м Груз 1500кг</option>
@@ -37,7 +37,7 @@
             <option value="Жёсткий 1.6м/1м/1м Груз 500кг">Жёсткий 1.6м/1м/1м Груз 500кг</option>
         </select>
         </label></div>
-        <br><label> Номер автомобиля<a style="color:red">*</a> : <input type="text" name="carNumber" id="carNumber" th:value="${carNumber_paste}"/> </label></br> <span style="color:red" th:text = "${carNumber}" /></div>
+        <label> Номер автомобиля<a style="color:red">*</a> : <input type="text" name="carNumber" id="carNumber" th:value="${carNumber_paste}"/> </label> <span style="color:red" th:text = "${carNumber}" /></div>
         <div><input type="submit" value="принять"/></div>
     </form>
 </div>

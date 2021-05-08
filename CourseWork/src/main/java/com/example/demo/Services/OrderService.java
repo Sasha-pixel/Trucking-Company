@@ -54,6 +54,14 @@ public class OrderService {
     }
 
     /**
+     * Метод для получение списка всех заказов
+     * @return список всех заказов
+     */
+    public List<Order> findAll() {
+        return orderRepository.findAll();
+    }
+
+    /**
      * получение данных о всех заказах пользователя
      *
      * @param customerUsername никней пользователя
