@@ -72,6 +72,7 @@ public class OrderController {
         if (orderService.validateOrderForm(orderForm, workersBuf, numberOfWorkers, truck, bindingResult, model)) {
             orderService.pasteOrderForm(orderForm, numberOfWorkers, model);
             model.addAttribute("user", user);
+            model.addAttribute("again", "yes");
             return "makeOrder";
         }
         orderForm.setCustomerUsername(SecurityContextHolder.getContext().getAuthentication().getName());

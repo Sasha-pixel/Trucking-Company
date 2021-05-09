@@ -73,6 +73,8 @@ public class OrderValidator implements Validator {
 //        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "targetDate", "обязательно к заполнению");
         if (order.getAddressFrom().isEmpty() || order.getAddressTo().isEmpty())
             errors.rejectValue("addressFrom", "обязательно к заполнению");
+        if (order.getTargetTime().length() != 5)
+            errors.rejectValue("targetTime", "обязательно к заполнению");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "targetDate", "обязательно к заполнению");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "distance", "обязательно к заполнению");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "duration", "обязательно к заполнению");

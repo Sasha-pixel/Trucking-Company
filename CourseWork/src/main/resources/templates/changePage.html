@@ -80,6 +80,19 @@
             margin-top: 10px;
             width: 96%;
             margin-left:2%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form {
+            margin-top: 20px;
+            width: 30%;
+            text-align: center;
+            background-color: #FFD700;
+            border: 3px solid black;
+            border-radius: 20px;
         }
         input {
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
@@ -88,6 +101,7 @@
             border: 2px solid black;
             background-color: white;
             border-radius: 15px;
+            text-align: center;
         }
     </style>
     <script>
@@ -96,7 +110,7 @@
         }
     </script>
 </head>
-<div>
+<body>
 <header>
     <div id="logo">
         <span>Donald Truck</span>
@@ -122,12 +136,14 @@
     </div>
 </header>
 <div class="content">
-<form action="/changePasswordAction" method="post">
-    <div><label> Старый пароль: <input type="password" name="old_password"/> </label></div>
-    <div><label> Новый пароль: <input type="password" name="password"/> </label></div>
-    <span style="color:red" th:text = "${errorMessage}" />
-    <div><input type="submit" value="Сменить пароль"/></div>
-</form>
+    <div class="form">
+        <form action="/changePasswordAction" method="post">
+            <span style="color:red" th:text = "${errorMessage}" />
+            <div><label><input type="password" name="old_password" placeholder="Старый пароль"/> </label></div>
+            <div><label><input type="password" name="password" placeholder="Новый пароль"/> </label></div>
+            <div><input type="submit" value="Сменить пароль"/></div>
+        </form>
+    </div>
 </div>
 </body>
 </html>

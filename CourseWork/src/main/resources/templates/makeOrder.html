@@ -85,7 +85,7 @@
         input, select {
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             padding: 5px;
-            margin: 10px 0px;
+            margin: 7.5px 0px;
             border: 2px solid black;
             background-color: white;
             border-radius: 15px;
@@ -105,7 +105,7 @@
             float: left;
             width: 55%;
             padding: 5px 5px 0px 5px;
-            background: #FFD700;
+            background-color: #FFD700;
             color: black;
             border: 8px solid #FF8C00;
             border-radius: 20px;
@@ -159,7 +159,7 @@
     <script>
         function getTodaysDate(){
             date = new Date();
-            day = date.getDate();
+            day = date.getDate() + 1;
             month = date.getMonth() + 1;
             month2 = date.getMonth() + 4;
             year = date.getFullYear();
@@ -170,6 +170,22 @@
             today2 = year + "-" + month2 + "-" + day;
             document.getElementById('targetDate').setAttribute('min', today);
             document.getElementById('targetDate').setAttribute('max', today2);
+        }
+    </script>
+    <script>
+        function setHour() {
+            let e = document.getElementById("hours");
+            if (e.value.length >= 2) e.value = e.value.slice(0, 2);
+            if (e.value.length === 1) e.value = '0' + e.value;
+            if (!e.value) e.value = '00';
+            document.getElementById("targetTime").value = e.value + ':' + document.getElementById("minutes").value;
+        }
+        function setMinutes() {
+            let e = document.getElementById("minutes");
+            if (e.value.length >= 2) e.value = e.value.slice(0, 2);
+            if (e.value.length === 1) e.value = '0' + e.value;
+            if (!e.value) e.value = '00';
+            document.getElementById("targetTime").value = document.getElementById("hours").value + ':' + e.value;
         }
     </script>
     <script>
@@ -214,6 +230,10 @@
         <div><label> Расстояние<a style="color:red">*</a> : <input type="text" name="distance" id="distance" th:value="${distance_paste}" readonly/> </label> <span style="color:red" th:text = "${distance}" /></div>
         <div><label> Длительность<a style="color:red">*</a> : <input type="text" name="duration" id="duration" th:value="${duration_paste}" readonly/> </label> <span style="color:red" th:text = "${duration}" /></div>
         <div><label> Дата<a style="color:red">*</a> : <input type="date" name="targetDate" id="targetDate" oninput="getTodaysDate()" th:value="${targetDate_paste}"/> </label> <span style="color:red" th:text = "${targetDate}" /></div>
+        <div><label> Время<a style="color:red">*</a> : <input type="number" min="9" max="20" name="hours" id="hours" oninput="setHour()" th:value="${hours_paste}"/><input type="number" min="0" max="59" name="minutes" id="minutes" oninput="setMinutes()" th:value="${minutes_paste}"/></label> <span style="color:red" th:text = "${targetTime}" /></div>
+        <div>
+            <input type="text" name="targetTime" id="targetTime" th:value="${targetTime_paste}" readonly/>
+        </div>
         <div><label> Количесвто грузчиков<a style="color:red">*</a> : <input type="number" min="1" max="3" required id="numberOfWorkers" name="numberOfWorkers" th:value="${numberOfWorkers_paste}"/> </label> <span style="color:red" th:text = "${workers}" /></div>
         <div><label> Тип автомобиля<a style="color:red">*</a> :
         <select name="truckDescription">
@@ -224,7 +244,14 @@
         </select>
         </label> <span style="color:red" th:text = "${truck}" /></div>
         <div><label> Примерная цена<a style="color:red">*</a> : <input type="text" name="price" id="price" th:value="${price_paste}" readonly/> </label> <span style="color:red" th:text = "${price}" /></div>
-        <div><input type="submit" id="OK" value="принять" disabled/></div>
+        <div th:switch="${again}">
+            <div th:case="yes">
+                <div><input type="submit" id="OK" value="принять"/></div>
+            </div>
+            <div th:case="*">
+                <div><input type="submit" id="OK" value="принять" disabled/></div>
+            </div>
+        </div>
     </form>
     <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBILU5tuxXgWHoI7KIOfUL5rk4JF98BPic&callback=initMap&libraries=&v=weekly&language=ru"

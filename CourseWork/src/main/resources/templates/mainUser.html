@@ -140,7 +140,7 @@
 </header>
 <div class="content">
 <h1 th:inline="text">Здравствуйте, [[${#httpServletRequest.remoteUser}]]!</h1>
-<span style="color:red" th:text = "${notActivated}" />
+<span th:text = "${notActivated}" />
 <div th:switch="${user.activationCode}">
     <div th:case="null">
         <form action="/makeOrder" method="get">
@@ -180,7 +180,7 @@
                             <td th:text="${order.id}"></td>
                             <td th:text="${order.addressFrom}"></td>
                             <td th:text="${order.addressTo}"></td>
-                            <td th:text="${order.targetDate}"></td>
+                            <td th:text="${order.targetDate}+' '+${order.targetTime}"></td>
                             <td th:text="${order.creationDate}"></td>
                             <td th:text="${order.workers}"></td>
                             <td th:text="${order.truck.description}"></td>

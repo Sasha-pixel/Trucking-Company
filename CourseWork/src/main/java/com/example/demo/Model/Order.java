@@ -36,6 +36,9 @@ public class Order {
     @Column(name = "target_date")
     private String targetDate;
 
+    @Column(name = "targetTime")
+    private String targetTime;
+
     @Column(name = "creation_date")
     private Date creationDate;
 
@@ -72,14 +75,19 @@ public class Order {
      * @param addressFrom адрес пункта отправки
      * @param addressTo адрес пункта назначения
      * @param targetDate дата выполнения заказа
+     * @param targetTime время выполнения заказа
      * @param creationDate дата оформления заказа
+     * @param distance дистанция перевозки груза
+     * @param duration длительность перевозки груза
      * @param workers список сотрудников
      * @param truck автомобиль
+     * @param price примерная стоимость выполнения заказа
      */
     public Order(String customerUsername,
                  String addressFrom,
                  String addressTo,
                  String targetDate,
+                 String targetTime,
                  Date creationDate,
                  String distance,
                  String duration,
@@ -90,6 +98,7 @@ public class Order {
         this.addressFrom = addressFrom;
         this.addressTo = addressTo;
         this.targetDate = targetDate;
+        this.targetTime = targetTime;
         this.creationDate = creationDate;
         this.distance = distance;
         this.duration = duration;
@@ -176,6 +185,22 @@ public class Order {
      */
     public void setTargetDate(String targetDate) {
         this.targetDate = targetDate;
+    }
+
+    /**
+     * получение времени выполнения заказа
+     * @return время выполнения заказа
+     */
+    public String getTargetTime() {
+        return targetTime;
+    }
+
+    /**
+     * установка времени выполнения заказа
+     * @param targetTime время выполнения заказа
+     */
+    public void setTargetTime(String targetTime) {
+        this.targetTime = targetTime;
     }
 
     /**

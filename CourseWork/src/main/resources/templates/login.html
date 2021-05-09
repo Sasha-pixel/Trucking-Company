@@ -137,12 +137,6 @@
 </header>
 <div class="content">
     <div class="form">
-<!--        <div th:if="${param.error}">-->
-<!--            <span style="color:red">Неверные имя пользователя или пароль.</span>-->
-<!--        </div>-->
-<!--        <div th:if="${param.logout}">-->
-<!--            <span style="color:red">Вы вышли из своей учётной записи.</span>-->
-<!--        </div>-->
         <div><span style="color:red" th:text = "${IncorrectData}" /></div>
         <div><span style="color:red" th:text = "${activate_fail}" /></div>
         <div><span style="color:green" th:text = "${activate_success}" /></div>

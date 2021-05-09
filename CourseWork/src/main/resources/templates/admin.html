@@ -154,7 +154,7 @@
         </div>
     </div>
 </header>
-<span style="color:red" th:text = "${notActivated}" />
+<span th:text = "${notActivated}" />
 <div class="content">
 <div th:switch="${user.activationCode}">
     <div th:case="null">
@@ -223,7 +223,7 @@
                                     <td th:text="${order.id}"></td>
                                     <td th:text="${order.addressFrom}"></td>
                                     <td th:text="${order.addressTo}"></td>
-                                    <td th:text="${order.targetDate}"></td>
+                                    <td th:text="${order.targetDate}+' '+${order.targetTime}"></td>
                                     <td th:text="${order.creationDate}"></td>
                                     <td th:text="${order.workers}"></td>
                                     <td th:text="${order.truck.carNumber}"></td>
@@ -301,7 +301,7 @@
                                     <td th:text="${order.id}"></td>
                                     <td th:text="${order.addressFrom}"></td>
                                     <td th:text="${order.addressTo}"></td>
-                                    <td th:text="${order.targetDate}"></td>
+                                    <td th:text="${order.targetDate}+' '+${order.targetTime}"></td>
                                     <td th:text="${order.creationDate}"></td>
                                     <td th:text="${order.workers}"></td>
                                     <td th:text="${order.truck.carNumber}"></td>

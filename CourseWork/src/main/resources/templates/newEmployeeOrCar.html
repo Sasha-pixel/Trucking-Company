@@ -77,25 +77,40 @@
         .show {display: block;}
 
         .content {
-            width: 96%;
             margin-top: 10px;
+            width: 96%;
             margin-left:2%;
+            display: flex;
+            flex-direction: raw;
+            justify-content: space-around;
+            align-items: space;
         }
         input, select {
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             padding: 5px;
-            margin: 10px 0px;
+            margin: 0px 0px 20px 0px;
             border: 2px solid black;
             background-color: white;
             border-radius: 15px;
+            text-align: center;
         }
         .car-form {
-            width: 50%;
-            float: left;
+            width: 30%;
+            height: 300px;
+            margin-top: 20px;
+            text-align: center;
+            background-color: #FFD700;
+            border: 3px solid black;
+            border-radius: 20px;
         }
         .employee-form {
-            width: 50%;
-            float: left;
+            width: 30%;
+            height: 300px;
+            margin-top: 20px;
+            text-align: center;
+            background-color: #FFD700;
+            border: 3px solid black;
+            border-radius: 20px;
         }
     </style>
     <script>
@@ -133,22 +148,29 @@
 <div class="car-form">
     <h1>Добавить автомобиль</h1>
     <form action="/admin/addCar" method="post">
-        <div><label> Тип автомобиля<a style="color:red">*</a> :
-        <select name="truckDescription">
-            <option value="Жёсткий 4м/2.2м/2м Груз 1500кг" selected="selected">Жёсткий 4м/2.2м/2м Груз 1500кг</option>
-            <option value="Тент 3м/1.5м/2м Груз 950кг">Тент 3м/1.5м/2м Груз 950кг</option>
-            <option value="Жёсткий 1.6м/1м/1м Груз 500кг">Жёсткий 1.6м/1м/1м Груз 500кг</option>
-            <option value="Жёсткий 13.6м/2.5м/2.45м Груз 20т">Жёсткий 13.6м/2.5м/2.45м Груз 20т</option>
-        </select>
-        </label></div>
-        <div><label> Номер автомобиля<a style="color:red">*</a> : <input type="text" name="carNumber" id="carNumber" th:value="${carNumber_paste}"/> </label> <span style="color:red" th:text = "${carNumber}" /></div>
+        <div><label> Тип автомобиля<a style="color:red">*</a></label></div>
+        <div>
+            <select name="truckDescription">
+                <option value="Жёсткий 4м/2.2м/2м Груз 1500кг" selected="selected">Жёсткий 4м/2.2м/2м Груз 1500кг</option>
+                <option value="Тент 3м/1.5м/2м Груз 950кг">Тент 3м/1.5м/2м Груз 950кг</option>
+                <option value="Жёсткий 1.6м/1м/1м Груз 500кг">Жёсткий 1.6м/1м/1м Груз 500кг</option>
+                <option value="Жёсткий 13.6м/2.5м/2.45м Груз 20т">Жёсткий 13.6м/2.5м/2.45м Груз 20т</option>
+            </select>
+        </div>
+        <div>
+            <span style="color:red" th:text = "${carNumber}" />
+        </div>
+        <div><label><input type="text" name="carNumber" id="carNumber" th:value="${carNumber_paste}" placeholder="Номер автомобиля"/> </label> </div>
         <div><input type="submit" value="принять"/></div>
     </form>
 </div>
 <div class="employee-form">
     <h1>Добавить сотрудника</h1>
     <form action="/admin/addEmployee" method="post">
-        <div><label> Имя и фамилия<a style="color:red">*</a> : <input type="text" name="name" id="name" th:value="${name_paste}"/> </label></br> <span style="color:red" th:text = "${name}" /></div>
+        <div>
+            <span style="color:red" th:text = "${name}" />
+        </div>
+        <div><label><input type="text" name="name" id="name" th:value="${name_paste}" placeholder="Имя и фамилия"/> </label></div>
         <div><input type="submit" value="принять"/></div>
     </form>
 </div>
