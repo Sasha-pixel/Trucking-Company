@@ -103,6 +103,10 @@ public class OrderService {
             model.addAttribute("hours_paste", orderForm.getTargetTime().split(":")[0]);
             model.addAttribute("minutes.paste", orderForm.getTargetTime().split(":")[1]);
         }
+        else if (orderForm.getTargetTime().charAt(2) == ':')
+            model.addAttribute("hours_paste", orderForm.getTargetTime().split(":")[0]);
+        else if (orderForm.getTargetTime().charAt(0) == ':')
+            model.addAttribute("minutes_paste", orderForm.getTargetTime().split(":")[1]);
         model.addAttribute("targetTime_paste", orderForm.getTargetTime());
         model.addAttribute("numberOfWorkers_paste", numberOfWorkers);
         model.addAttribute("price_paste", orderForm.getPrice());
