@@ -23,11 +23,11 @@
             font-family: 'Suez One', serif;
             font-size: 35px;
             float: left;
-            margin-left: 10px;
         }
         header #menu {
             text-align: center;
             font-size: 15px;
+            margin-left: -500px;
         }
         header #menu a {
             color: white;
@@ -47,8 +47,6 @@
         .dropbtn {
             margin-right: 15px;
             background-color: black;
-            /*border-radius: 10px;*/
-            /*float: right;*/
             color: white;
             padding: 5px;
             border: none;
@@ -94,6 +92,21 @@
             border: 3px solid black;
             padding: 15px;
         }
+        .content input {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            color: white;
+            background: black;
+            border: 1px solid black;
+            text-decoration: none;
+            padding: 20px 20px;
+            margin: 0px 0px 20px 0px;
+        }
+        .content input:hover {
+            color: #FF8C00;
+            background: black;
+            text-decoration: none;
+            transition: 0.2s;
+        }
     </style>
     <script>
         function myFunction() {
@@ -128,15 +141,17 @@
 </header>
 <div class="content">
     <h1>Приветствуем!</h1>
+    <form action="/makeOrder" method="get">
+        <input type="submit" value="Оформить заказ"/>
+    </form>
     <div>
         <img src="https://thumbs.dreamstime.com/b/%D1%84%D1%83%D1%80%D0%B3%D0%BE%D0%BD%D1%8B-%D0%BF%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D0%BA%D0%B8-%D0%B1%D0%B5%D0%BB%D1%8B%D0%B5-%D0%B2-%D0%BE%D0%B1%D1%81%D0%BB%D1%83%D0%B6%D0%B8%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8-%D1%84%D1%83%D1%80%D0%B3%D0%BE%D0%BD%D0%B5-%D1%82%D0%B5%D0%BB%D0%B5%D0%B6%D0%BA%D0%B5-%D0%B8-%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D1%8F%D1%85-113053406.jpg">
         <span>Грузоперевозки в Москве и Московской области - эффективное решение непростых задач, связанных с транспортировкой грузов любой сложности, услугами грузчиков или переездом по столице, области и стране. Грузовая компания «Donald Truck» рада предложить официальные грузоперевозки, современный сервис и комплексный подход к переезду и перевозке требуемых вещей, мебели, техники и прочего по доступным приятным ценам. Мы грамотно и быстро организуем процесс, максимально оградив заказчика от предстоящих хлопот.</span>
     </div>
     <div>
-        <img src="https://lh3.googleusercontent.com/proxy/noZBt_pAG83M6MWBKTy6pH39fXAdLm-gEHSuwcoUvxh_JleAXB8SVs6sdOlYG6nLxQTcMk-CPSmBdRiRSkxfSwK8m2jm4LLvMbwM8FgoAL_HZM2Eyylmv2_Dem7pFF8EeoNeQpTr7Lfvo8eIW7yBemeQ2EnC5l35WSDHHw-ildFmynQh4e1kwBHrkT0jxXx4_abniN07TcnUKez2c5lRPDuHJlqty1aWqPf3K5jmxBeekoGlG7FmDnVA">
+        <img src="https://st.depositphotos.com/2923727/3666/i/600/depositphotos_36660157-stock-photo-movers-unloading-a-moving-van.jpg">
         <span>Если вы с содроганием сердца представляете, как переносите вниз дубовый шкаф или несете хрупкие бокалы, подумайте дважды. «Donald Truck» направит к вам на помощь профессиональных грузчиков, которые быстро упакуют, аккуратно погрузят, а затем качественно установят любое сложное оборудование. Наш сервис дает 100% гарантию сохранности груза.</span>
     </div>
-
 </div>
 </body>
 </html>
