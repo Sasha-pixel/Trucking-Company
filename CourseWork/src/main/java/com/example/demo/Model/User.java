@@ -40,6 +40,9 @@ public class User implements UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role8", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -58,14 +61,16 @@ public class User implements UserDetails {
      * @param activationCode код для активации учётной записи
      * @param password пароль
      * @param phoneNumber номер телефона
+     * @param resetPasswordToken токен для восстановления пароля
      * @param roles набор ролей
      */
-    public User(String username, String email, String activationCode, String password, String phoneNumber, Set<Role> roles) {
+    public User(String username, String email, String activationCode, String password, String phoneNumber, String resetPasswordToken, Set<Role> roles) {
         this.username = username;
         this.email = email;
         this.activationCode = activationCode;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.resetPasswordToken = resetPasswordToken;
         this.roles = roles;
     }
 
@@ -178,6 +183,22 @@ public class User implements UserDetails {
      */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * получение токена для смены пароля
+     * @return токен для смены пароля
+     */
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    /**
+     * установка токена для смены пароля
+     * @param resetPasswordToken токен для смены пароля
+     */
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 
     /**

@@ -276,4 +276,69 @@ public class AuthorizationService {
             return "/changePage";
         }
     }
+
+    /**
+     * Метод для отпраки на почту сообщения с ссылкой для восстановления пароля
+     * @param user объект авторизированного пользователя
+     * @param email эл.почта пользователя, утратившего пароль
+     * @param model модель веб-страницы
+     * @return страницу восстановления пароля или перенаправление на страницу авторизации
+     */
+    public String forgetPasswordAction(User user, String email, Model model) {
+        if (email.isEmpty()) {
+            model.addAttribute("user", user);
+            model.addAttribute("IncorrectData", "обязательно к заполнению");
+            return "forgetPassword";
+        }
+        if (!authorizationValidator.validateEmail(email)) {
+            model.addAttribute("user", user);
+            model.addAttribute("IncorrectData", "неправильный формат эл.почты");
+            return "forgetPassword";
+        }
+        User userFromDB = userRepository.findByEmail(email);
+        if (userFromDB == null) {
+            model.addAttribute("user", user);
+            model.addAttribute("IncorrectData", "пользователь с такой эл.почтой не зарегистрирован");
+            return "forgetPassword";
+        }
+        userFromDB.setResetPasswordToken(UUID.randomUUID().toString());
+        userRepository.save(userFromDB);
+        String message = "Здравствуйте, " + userFromDB.getUsername() + '\n' +
+                "Для смены пароля перейдите по ссылке: http://localhost:8087/resetPassword/" +
+                userFromDB.getResetPasswordToken();
+        mailSender.send(userFromDB.getEmail(), "Восстановление пароля", message);
+        return "redirect:/login";
+    }
+
+    /**
+     * Метод смены пароля, если пользователь забыл пароль
+     * @param user объект авторизированного пользователя
+     * @param password новый пароль
+     * @param token токен для смены пароля
+     * @param model модель веб-страницы
+     * @return страницу восстановления пароля или перенаправление на страницу авторизации
+     */
+    public String resetPasswordAction(User user, String token, String password, Model model) {
+        if (password.isEmpty()) {
+            model.addAttribute("user", user);
+            model.addAttribute("IncorrectData", "обязательно к заполнению");
+            return "resetPassword";
+        }
+        if (password.length() < 6) {
+            model.addAttribute("user", user);
+            model.addAttribute("IncorrectData", "пароль не должен быть короче 6 символов");
+            return "resetPassword";
+        }
+        User userFromDB = userRepository.findByResetPasswordToken(token);
+        if (userFromDB == null) {
+            model.addAttribute("user", user);
+            model.addAttribute("IncorrectData", "не удалось сменить пароль");
+            return "resetPassword";
+        }
+        userFromDB.setResetPasswordToken(null);
+        userFromDB.setPassword(password);
+        updatePassword(userFromDB);
+        model.addAttribute("reset_password_success", "пароль успешно обновлён");
+        return "redirect:/login";
+    }
 }

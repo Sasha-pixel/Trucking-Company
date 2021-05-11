@@ -78,4 +78,62 @@ public class AuthorizationController {
             model.addAttribute("activate_fail", "Активация учётной записи не удалась");
         return "login";
     }
+
+    /**
+     * Метод получения страницы для восстановления пароля
+     * @param user объект авторизированного пользователя
+     * @param model модель веб-страницы
+     * @return страница восстановления пароля
+     */
+    @GetMapping("/forgetPassword")
+    public String getForgetPasswordPage(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
+        return "forgetPassword";
+    }
+
+    /**
+     * Метод отпраки пользователю письма с ссылкой на страницу восстановления пароля
+     * @param user объект авторизированного пользователя
+     * @param email адрес эл.почты
+     * @param model модель веб-страницы
+     * @return страницу восстановления пароля или перенаправление на страницу авторизации
+     */
+    @PostMapping("/forgetPasswordAction")
+    public String forgetPasswordAction(@AuthenticationPrincipal User user,
+                                       @RequestParam("email") String email,
+                                       Model model) {
+        return authorizationService.forgetPasswordAction(user, email, model);
+    }
+
+    /**
+     * Метод получения страницы восстановления пароля по ссылке из письма
+     * @param user объект авторизированного пользователя
+     * @param resetPasswordToken токен для восстановления пароля
+     * @param model модель веб-страницы
+     * @return страницу восстановления пароля
+     */
+    @GetMapping("/resetPassword/{resetPasswordToken}")
+    public String getResetPasswordPage(@AuthenticationPrincipal User user,
+                                       @PathVariable String resetPasswordToken,
+                                       Model model) {
+        model.addAttribute("user", user);
+        model.addAttribute("token", resetPasswordToken);
+        return "resetPassword";
+    }
+
+    /**
+     * Метод установки нового пароля после утери старого
+     * @param user объект авторизированного пользователя
+     * @param token токен для восстановления пароля
+     * @param password новый пароль
+     * @param model модель веб-страницы
+     * @return страницу восстановления пароля или перенаправление на страницу авторизации
+     */
+    @PostMapping("/resetPasswordAction")
+    public String resetPasswordAction(@AuthenticationPrincipal User user,
+                                      @ModelAttribute("token") String token,
+                                      @ModelAttribute("password") String password,
+                                      Model model) {
+        return authorizationService.resetPasswordAction(user, token, password, model);
+    }
 }

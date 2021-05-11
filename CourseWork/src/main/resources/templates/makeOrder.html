@@ -189,6 +189,15 @@
         }
     </script>
     <script>
+        function changePlaces() {
+            let from = document.getElementById("addressFrom");
+            let to = document.getElementById("addressTo");
+            var buffer = to.value;
+            to.value = from.value;
+            from.value = buffer;
+        }
+    </script>
+    <script>
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
@@ -224,17 +233,19 @@
 <div class="order-form">
     <form action="/makeOrderAction" method="post">
         <div style="display:inline-block">
-            <label> Откуда<a style="color:red">*</a> : <input type="text" name="addressFrom" id="addressFrom" th:value="${addressFrom_paste}"/> </label>
-            <label> Куда<a style="color:red">*</a> : <input type="text" name="addressTo" id="addressTo" th:value="${addressTo_paste}"/> </label> <span style="color:red" th:text = "${addressFrom}" />
+            <label style="margin-right: 10px"> Откуда<a style="color:red">*</a> : <input type="text" name="addressFrom" id="addressFrom" th:value="${addressFrom_paste}"/></label>
+            <img src="https://img.icons8.com/metro/26/000000/sorting-arrows-horizontal.png" style="margin-bottom: -7px; cursor: pointer; width: 20px;" onclick="changePlaces()"/>
+            <label style="margin-left: 10px">Куда<a style="color:red">*</a> : <input type="text" name="addressTo" id="addressTo" th:value="${addressTo_paste}"/> </label> <span style="color:red" th:text = "${addressFrom}" />
         </div>
         <div><label> Расстояние<a style="color:red">*</a> : <input type="text" name="distance" id="distance" th:value="${distance_paste}" readonly/> </label> <span style="color:red" th:text = "${distance}" /></div>
         <div><label> Длительность<a style="color:red">*</a> : <input type="text" name="duration" id="duration" th:value="${duration_paste}" readonly/> </label> <span style="color:red" th:text = "${duration}" /></div>
         <div><label> Дата<a style="color:red">*</a> : <input type="date" name="targetDate" id="targetDate" oninput="getTodaysDate()" th:value="${targetDate_paste}"/> </label> <span style="color:red" th:text = "${targetDate}" /></div>
-        <div><label> Время<a style="color:red">*</a> : <input type="number" min="9" max="20" name="hours" id="hours" oninput="setHour()" th:value="${hours_paste}"/><input type="number" min="0" max="59" name="minutes" id="minutes" oninput="setMinutes()" th:value="${minutes_paste}"/></label> <span style="color:red" th:text = "${targetTime}" /></div>
-        <div style="display:none">
-            <input type="text" name="targetTime" id="targetTime" th:value="${targetTime_paste}" readonly/>
-        </div>
-        <div><label> Количесвто грузчиков<a style="color:red">*</a> : <input type="number" min="1" max="3" required id="numberOfWorkers" name="numberOfWorkers" th:value="${numberOfWorkers_paste}"/> </label> <span style="color:red" th:text = "${workers}" /></div>
+        <div><label> Время<a style="color:red">*</a> : <input type="number" min="9" max="20" name="hours" id="hours" oninput="setHour()" th:attr="value=${hours_paste}==null?'09':${hours_paste}"/><input type="number" min="0" max="59" name="minutes" id="minutes" oninput="setMinutes()" th:attr="value=${minutes_paste}==null?'00':${minutes_paste}"/></label> <span style="color:red" th:text = "${targetTime}" /></div>
+<!--        <div style="display:none">-->
+<!--            <input type="text" name="targetTime" id="targetTime" th:value="${targetTime_paste}" readonly/>-->
+<!--        </div>-->
+        <input type="hidden" name="targetTime" id="targetTime" th:value="${targetTime_paste}" readonly/>
+        <div><label> Количесвто грузчиков<a style="color:red">*</a> : <input type="number" min="1" max="3" required id="numberOfWorkers" name="numberOfWorkers" th:attr="value=${numberOfWorkers_paste}==null?'1':${numberOfWorkers_paste}"/> </label> <span style="color:red" th:text = "${workers}" /></div>
         <div><label> Тип автомобиля<a style="color:red">*</a> :
         <select name="truckDescription">
             <option value="Жёсткий 4м/2.2м/2м Груз 1500кг" selected>Жёсткий 4м/2.2м/2м Груз 1500кг</option>

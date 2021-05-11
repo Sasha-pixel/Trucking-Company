@@ -45,4 +45,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     * @return a {@link com.example.demo.Model.User} object.
     */
     User findByActivationCode(String code);
+
+   /**
+    * Поиск пользователя по токену для смены пароля
+    * @param token
+    * @return
+    */
+    User findByResetPasswordToken(String token);
 }

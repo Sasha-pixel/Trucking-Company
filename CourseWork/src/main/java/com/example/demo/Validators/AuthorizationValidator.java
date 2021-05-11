@@ -59,9 +59,9 @@ public class AuthorizationValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "обязательно к заполнению");
         if (!validateEmail(user.getEmail()))
-            errors.rejectValue("email", "неправильный формат эл. почты");
+            errors.rejectValue("email", "неправильный формат эл.почты");
         if (authorizationService.findByEmail(user.getEmail()) != null)
-            errors.rejectValue("email", "пользователь с такой эл. почтой уже сущетсвует");
+            errors.rejectValue("email", "пользователь с такой эл.почтой уже сущетсвует");
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneNumber", "обязательно к заполнению");
         if (!validatePhoneNumber(user.getPhoneNumber()))

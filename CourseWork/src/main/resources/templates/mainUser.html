@@ -185,7 +185,7 @@
                             <td th:text="${order.workers}"></td>
                             <td th:text="${order.truck.description}"></td>
                             <td th:text="${order.price}+'₽'"></td>
-                            <td><a th:href="@{deleteOrder/{id}(id=${order.id})}">отменить заказ</a></td>
+                            <td><a th:href="@{deleteOrder/{id}(id=${order.id})}" >отменить заказ</a></td>
                         </tr>
                     </tbody>
                 </table>

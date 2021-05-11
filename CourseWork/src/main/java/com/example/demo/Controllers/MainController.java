@@ -1,6 +1,7 @@
 package com.example.demo.Controllers;
 
 import com.example.demo.Model.User;
+import com.example.demo.Roles.Role;
 import com.example.demo.Services.OrderService;
 import com.example.demo.Services.AuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 /**
  * Контроллер, отвечающий за весь
@@ -38,6 +40,10 @@ public class MainController {
     @GetMapping("/")
     public String homePage(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
+        if (user != null) {
+            if (user.getRoles().contains(Role.USER))
+                model.addAttribute("userRole", "user");
+        }
         return "home";
     }
 
