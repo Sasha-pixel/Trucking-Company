@@ -12,12 +12,12 @@
             outline: none;
         }
         body {
-            background-color: #FF8C00;
+            background-color: #ccffbd;
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
         }
         header {
             width: 100%;
-            background: black;
+            background: #1c1427;
         }
         #logo {
             color: white;
@@ -36,6 +36,10 @@
             padding: 4px 30px;
             line-height: 50px;
         }
+        header #menu a:hover {
+            color: #40394a;
+            background: #7eca9c;
+        }
         header #menu span {
             color: white;
             text-decoration: none;
@@ -47,7 +51,7 @@
         }
         .dropbtn {
             margin-right: 15px;
-            background-color: black;
+<!--            background-color: black;-->
             /*border-radius: 10px;*/
             /*float: right;*/
             color: white;
@@ -55,12 +59,15 @@
             border: none;
             cursor: pointer;
         }
-
+        #navbar span:hover {
+            color: #40394a;
+            background: #7eca9c;
+        }
         .dropdown-content {
             margin-right: 15px;
             display: none;
             position: absolute;
-            background-color: black;
+            background-color: #40394a;
             min-width: 200px;
             overflow: auto;
             right: 0;
@@ -68,7 +75,8 @@
         }
 
         .dropdown-content a {
-            color: black;
+            color: #40394a;
+            margin: 4px;
             padding: 12px 16px;
             text-decoration: none;
             display: block;
@@ -98,19 +106,22 @@
             height: 100%;
             width: 40%;
             float: left;
-            border: solid 10px #FFD700;
+            border: solid 4px #1c1427;
             border-radius: 20px;
         }
         form {
             float: left;
             width: 55%;
             padding: 5px 5px 0px 5px;
-            background-color: #FFD700;
+            background-color: #7eca9c;
             color: black;
-            border: 8px solid #FF8C00;
+            border: 4px solid #1c1427;
             border-radius: 20px;
-            margin: 0px 10px 0px 10px;
+            margin: 0px 24px 0px 10px;
             height: 100%;
+        }
+        h1 {
+            margin-left: 10px;
         }
     </style>
     <script>
@@ -132,6 +143,7 @@
             document.getElementById("numberOfWorkers").addEventListener("change", onChangeNumberOfWorkers);
             document.getElementById("addressFrom").addEventListener("change", onChangeHandler);
             document.getElementById("addressTo").addEventListener("change", onChangeHandler);
+            document.getElementById("replaceAddresses").addEventListener("click", onChangeHandler);
         }
 
         function calculateAndDisplayRoute(directionsService, directionsRenderer) {
@@ -234,7 +246,7 @@
     <form action="/makeOrderAction" method="post">
         <div style="display:inline-block">
             <label style="margin-right: 10px"> Откуда<a style="color:red">*</a> : <input type="text" name="addressFrom" id="addressFrom" th:value="${addressFrom_paste}"/></label>
-            <img src="https://img.icons8.com/metro/26/000000/sorting-arrows-horizontal.png" style="margin-bottom: -7px; cursor: pointer; width: 20px;" onclick="changePlaces()"/>
+            <img src="https://img.icons8.com/metro/26/000000/sorting-arrows-horizontal.png" style="margin-bottom: -7px; cursor: pointer; width: 20px;" onclick="changePlaces()" id="replaceAddresses"/>
             <label style="margin-left: 10px">Куда<a style="color:red">*</a> : <input type="text" name="addressTo" id="addressTo" th:value="${addressTo_paste}"/> </label> <span style="color:red" th:text = "${addressFrom}" />
         </div>
         <div><label> Расстояние<a style="color:red">*</a> : <input type="text" name="distance" id="distance" th:value="${distance_paste}" readonly/> </label> <span style="color:red" th:text = "${distance}" /></div>
@@ -244,7 +256,7 @@
 <!--        <div style="display:none">-->
 <!--            <input type="text" name="targetTime" id="targetTime" th:value="${targetTime_paste}" readonly/>-->
 <!--        </div>-->
-        <input type="hidden" name="targetTime" id="targetTime" th:value="${targetTime_paste}" readonly/>
+        <input type="hidden" name="targetTime" id="targetTime" th:attr="value=${targetTime_paste}==null?'09:00':${targetTime_paste}" readonly/>
         <div><label> Количесвто грузчиков<a style="color:red">*</a> : <input type="number" min="1" max="3" required id="numberOfWorkers" name="numberOfWorkers" th:attr="value=${numberOfWorkers_paste}==null?'1':${numberOfWorkers_paste}"/> </label> <span style="color:red" th:text = "${workers}" /></div>
         <div><label> Тип автомобиля<a style="color:red">*</a> :
         <select name="truckDescription">

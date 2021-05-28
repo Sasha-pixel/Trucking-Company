@@ -11,13 +11,13 @@
             outline: none;
         }
         body {
-            background-color: #FF8C00;
+            background-color: #ccffbd;
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             text-align: center;
         }
         header {
             width: 100%;
-            background: black;
+            background: #1c1427;
         }
         #logo {
             color: white;
@@ -36,6 +36,10 @@
             padding: 4px 30px;
             line-height: 50px;
         }
+        header #menu a:hover {
+            color: #40394a;
+            background: #7eca9c;
+        }
         header #menu span {
             color: white;
             text-decoration: none;
@@ -47,7 +51,7 @@
         }
         .dropbtn {
             margin-right: 15px;
-            background-color: black;
+<!--            background-color: black;-->
             /*border-radius: 10px;*/
             /*float: right;*/
             color: white;
@@ -55,15 +59,15 @@
             border: none;
             cursor: pointer;
         }
-        .dropbtn span {
-
+        #navbar span:hover {
+            color: #40394a;
+            background: #7eca9c;
         }
-
         .dropdown-content {
             margin-right: 15px;
             display: none;
             position: absolute;
-            background-color: black;
+            background-color: #40394a;
             min-width: 200px;
             overflow: auto;
             right: 0;
@@ -71,7 +75,8 @@
         }
 
         .dropdown-content a {
-            color: black;
+            color: #40394a;
+            margin: 4px;
             padding: 12px 16px;
             text-decoration: none;
             display: block;

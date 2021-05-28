@@ -99,14 +99,8 @@ public class OrderService {
         model.addAttribute("distance_paste", orderForm.getDistance());
         model.addAttribute("duration_paste", orderForm.getDuration());
         model.addAttribute("targetDate_paste", orderForm.getTargetDate());
-        if (orderForm.getTargetTime().length() == 5) {
-            model.addAttribute("hours_paste", orderForm.getTargetTime().split(":")[0]);
-            model.addAttribute("minutes.paste", orderForm.getTargetTime().split(":")[1]);
-        }
-        else if (orderForm.getTargetTime().length() >= 3 && orderForm.getTargetTime().charAt(2) == ':')
-            model.addAttribute("hours_paste", orderForm.getTargetTime().split(":")[0]);
-        else if (orderForm.getTargetTime().length() >= 3 && orderForm.getTargetTime().charAt(0) == ':')
-            model.addAttribute("minutes_paste", orderForm.getTargetTime().split(":")[1]);
+        model.addAttribute("hours_paste", orderForm.getTargetTime().split(":")[0]);
+        model.addAttribute("minutes_paste", orderForm.getTargetTime().split(":")[1]);
         model.addAttribute("targetTime_paste", orderForm.getTargetTime());
         model.addAttribute("numberOfWorkers_paste", numberOfWorkers);
         model.addAttribute("price_paste", orderForm.getPrice());

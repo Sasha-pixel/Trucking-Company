@@ -1,10 +1,15 @@
 package com.example.demo.Configuration;
 
 
+import com.example.demo.Model.User;
+import com.example.demo.Services.AuthorizationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -30,6 +35,7 @@ public class CustomFilter extends UsernamePasswordAuthenticationFilter {
      * @param authenticationManager
      */
     public CustomFilter(String url, AuthenticationManager authenticationManager) {
+
         setAuthenticationManager(authenticationManager);
 
         setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler(){
