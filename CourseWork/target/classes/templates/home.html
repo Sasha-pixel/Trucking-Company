@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>home page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Suez+One&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+        body {
+            background-color: #ccffbd;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        header {
+            width: 100%;
+            background: #1c1427;
+        }
+        #logo {
+            color: white;
+            font-family: 'Suez One', serif;
+            font-size: 35px;
+            float: left;
+            margin-left: 10px;
+        }
+        header #menu {
+            text-align: center;
+            font-size: 15px;
+        }
+        header #menu a {
+            color: white;
+            text-decoration: none;
+            padding: 4px 30px;
+            line-height: 50px;
+        }
+        header #menu a:hover {
+            color: #40394a;
+            background: #7eca9c;
+        }
+        header #menu span {
+            color: white;
+            text-decoration: none;
+            padding: 4px;
+            line-height: 50px;
+        }
+        header #enter {
+            float: right;
+        }
+        .dropbtn {
+            margin-right: 15px;
+<!--            background-color: black;-->
+            /*border-radius: 10px;*/
+            /*float: right;*/
+            color: white;
+            padding: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        #navbar span:hover {
+            color: #40394a;
+            background: #7eca9c;
+        }
+        .dropdown-content {
+            margin-right: 15px;
+            display: none;
+            position: absolute;
+            background-color: #40394a;
+            min-width: 200px;
+            overflow: auto;
+            right: 0;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #40394a;
+            margin: 4px;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: 0.5s;
+        }
+
+        .show {display: block;}
+
+        .content {
+            width: 96%;
+            margin-top: 10px;
+            margin-left:2%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .content img {
+            width: 600px;
+            margin-right: 15px;
+            float: left;
+        }
+        .content .con {
+            margin-bottom: 15px;
+            border: 3px solid black;
+            padding: 15px;
+        }
+        .content input {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 15px;
+            color: white;
+            background: #1c1427;
+            border: 3px solid #1c1427;
+            text-decoration: none;
+            padding: 20px 20px;
+            margin: 0px 0px 20px 0px;
+        }
+        .content input:hover {
+            color: #1c1427;
+            background: #7eca9c;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+    </style>
+    <script>
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+    </script>
+</head>
+<body>
+<header>
+    <div id="logo">
+        <span>Donald Truck</span>
+    </div>
+    <div id="menu">
+        <a href="/">Главная страница</a>
+        <a href="/main">Личный кабинет</a>
+        <div id="enter">
+            <div th:switch="${user}">
+                <div th:case="null">
+                    <a href="/login">Войти</a>/<a href="/registration">Регистрация</a>
+                </div>
+                <div th:case="*">
+                    <div id="navbar">
+                        <span onclick="myFunction()" class="dropbtn" th:text="${user.username}"/>
+                        <ul id="myDropdown" class="dropdown-content">
+                            <li><a href="/logout">Выйти</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="content">
+    <h1>Приветствуем!</h1>
+    <div th:switch="${user}">
+        <div th:case="null">
+            <form action="/main" method="get">
+                <input type="submit" value="Оформить заказ"/>
+            </form>
+        </div>
+        <div th:case="*">
+            <div th:switch="${userRole}">
+                <div th:case="user">
+                    <div th:switch="${user.activationCode}">
+                        <div th:case="null">
+                            <form action="/makeOrder" method="get">
+                                <input type="submit" value="Оформить заказ"/>
+                            </form>
+                        </div>
+                        <div th:case="*">
+                            <form action="/main" method="get">
+                                <input type="submit" value="Оформить заказ"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div th:case="*">
+                    <form action="/main" method="get">
+                        <input type="submit" value="Оформить заказ"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--    <form action="/makeOrder" method="get">-->
+<!--        <input type="submit" value="Оформить заказ"/>-->
+<!--    </form>-->
+    <div class="con">
+        <img src="https://thumbs.dreamstime.com/b/%D1%84%D1%83%D1%80%D0%B3%D0%BE%D0%BD%D1%8B-%D0%BF%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D0%BA%D0%B8-%D0%B1%D0%B5%D0%BB%D1%8B%D0%B5-%D0%B2-%D0%BE%D0%B1%D1%81%D0%BB%D1%83%D0%B6%D0%B8%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8-%D1%84%D1%83%D1%80%D0%B3%D0%BE%D0%BD%D0%B5-%D1%82%D0%B5%D0%BB%D0%B5%D0%B6%D0%BA%D0%B5-%D0%B8-%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D1%8F%D1%85-113053406.jpg">
+        <span>Грузоперевозки в Москве и Московской области - эффективное решение непростых задач, связанных с транспортировкой грузов любой сложности, услугами грузчиков или переездом по столице, области и стране. Грузовая компания «Donald Truck» рада предложить официальные грузоперевозки, современный сервис и комплексный подход к переезду и перевозке требуемых вещей, мебели, техники и прочего по доступным приятным ценам. Мы грамотно и быстро организуем процесс, максимально оградив заказчика от предстоящих хлопот.</span>
+    </div>
+    <div class="con">
+        <img src="https://st.depositphotos.com/2923727/3666/i/600/depositphotos_36660157-stock-photo-movers-unloading-a-moving-van.jpg">
+        <span>Если вы с содроганием сердца представляете, как переносите вниз дубовый шкаф или несете хрупкие бокалы, подумайте дважды. «Donald Truck» направит к вам на помощь профессиональных грузчиков, которые быстро упакуют, аккуратно погрузят, а затем качественно установят любое сложное оборудование. Наш сервис дает 100% гарантию сохранности груза.</span>
+    </div>
+</div>
+</body>
+</html>

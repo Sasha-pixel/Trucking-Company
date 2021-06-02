@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Spring Security Example </title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Suez+One&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+        body {
+            background-color: #ccffbd;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        header {
+            width: 100%;
+            background: #1c1427;
+        }
+        #logo {
+            color: white;
+            font-family: 'Suez One', serif;
+            font-size: 35px;
+            float: left;
+            margin-left: 10px;
+        }
+        header #menu {
+            text-align: center;
+            font-size: 15px;
+        }
+        header #menu a {
+            color: white;
+            text-decoration: none;
+            padding: 4px 30px;
+            line-height: 50px;
+        }
+        header #menu a:hover {
+            color: #40394a;
+            background: #7eca9c;
+        }
+        header #menu span {
+            color: white;
+            text-decoration: none;
+            padding: 4px;
+            line-height: 50px;
+        }
+        header #enter {
+            float: right;
+        }
+        .dropbtn {
+            margin-right: 15px;
+<!--            background-color: black;-->
+            /*border-radius: 10px;*/
+            /*float: right;*/
+            color: white;
+            padding: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        #navbar span:hover {
+            color: #40394a;
+            background: #7eca9c;
+        }
+        .dropdown-content {
+            margin-right: 15px;
+            display: none;
+            position: absolute;
+            background-color: #40394a;
+            min-width: 200px;
+            overflow: auto;
+            right: 0;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #40394a;
+            margin: 4px;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: 0.5s;
+        }
+
+        .show {display: block;}
+
+        .content {
+            margin-top: 10px;
+            width: 96%;
+            margin-left:2%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form {
+            margin-top: 20px;
+            width: 30%;
+            text-align: center;
+            background-color: #7eca9c;
+            border: 3px solid #1c1427;
+            border-radius: 20px;
+        }
+        .info {
+            margin-top: 20px;
+            text-align: center;
+        }
+        input {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            padding: 5px;
+            margin: 20px 0px 0px 0px;
+            border: 2px solid #1c1427;
+            background-color: white;
+            border-radius: 15px;
+            text-align: center;
+        }
+        form:last-child:last-child {
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+    </script>
+</head>
+<body>
+<header>
+    <div id="logo">
+        <span>Donald Truck</span>
+    </div>
+    <div id="menu">
+        <a href="/">Главная страница</a>
+        <a href="/main">Личный кабинет</a>
+        <div id="enter">
+            <div th:switch="${user}">
+                <div th:case="null">
+                    <a href="/login">Войти</a>/<a href="/registration">Регистрация</a>
+                </div>
+                <div th:case="*">
+                    <div id="navbar">
+                        <span onclick="myFunction()" class="dropbtn" th:text="${user.username}"/>
+                        <ul id="myDropdown" class="dropdown-content">
+                            <li><a href="/logout">Выйти</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="content">
+    <div class="form">
+        <form action="/registrationAction" method="post">
+            <div><label> <input type="text" name="username" th:value="${username_paste}" placeholder="Имя пользователя"/> </label></div>
+            <div><span style="color:red" th:text = "${username}" /></div>
+            <div><label> <input type="text" name="email" th:value="${email_paste}" placeholder="Адрес эл.почты"/> </label></div>
+            <div><span style="color:red" th:text = "${email}" /></div>
+            <div><label> <input type="text" name="phoneNumber" th:value="${phoneNumber_paste}" placeholder="Номер телефона"/> </label></div>
+            <div><span style="color:red" th:text = "${phoneNumber}" /></div>
+            <div><label> <input type="password" name="password" placeholder="Пароль"/> </label></div>
+            <div><span style="color:red" th:text = "${password}"/></div>
+            <div><input type="submit" value="зарегистрироваться"/></div>
+        </form>
+    </div>
+    <div class="info">
+        <span>После регистрации на указанный адрес эл.почты будет отправлено письмо, содержащее ссылку для активации учётной записи</span>
+    </div>
+</div>
+</body>
+</html>

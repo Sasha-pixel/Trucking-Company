@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>new Employee or Car</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Suez+One&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+        body {
+            background-color: #ccffbd;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        header {
+            width: 100%;
+            background: #1c1427;
+        }
+        #logo {
+            color: white;
+            font-family: 'Suez One', serif;
+            font-size: 35px;
+            float: left;
+            margin-left: 10px;
+        }
+        header #menu {
+            text-align: center;
+            font-size: 15px;
+        }
+        header #menu a {
+            color: white;
+            text-decoration: none;
+            padding: 4px 30px;
+            line-height: 50px;
+        }
+        header #menu a:hover {
+            color: #40394a;
+            background: #7eca9c;
+        }
+        header #menu span {
+            color: white;
+            text-decoration: none;
+            padding: 4px;
+            line-height: 50px;
+        }
+        header #enter {
+            float: right;
+        }
+        .dropbtn {
+            margin-right: 15px;
+<!--            background-color: black;-->
+            /*border-radius: 10px;*/
+            /*float: right;*/
+            color: white;
+            padding: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        #navbar span:hover {
+            color: #40394a;
+            background: #7eca9c;
+        }
+        .dropdown-content {
+            margin-right: 15px;
+            display: none;
+            position: absolute;
+            background-color: #40394a;
+            min-width: 200px;
+            overflow: auto;
+            right: 0;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #40394a;
+            margin: 4px;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: 0.5s;
+        }
+
+        .show {display: block;}
+
+        .content {
+            margin-top: 10px;
+            width: 96%;
+            margin-left:2%;
+            display: flex;
+            flex-direction: raw;
+            justify-content: space-around;
+            align-items: space;
+        }
+        input, select {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            padding: 5px;
+            margin: 0px 0px 20px 0px;
+            border: 2px solid #1c1427;
+            background-color: white;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .car-form {
+            width: 30%;
+            height: 300px;
+            margin-top: 20px;
+            text-align: center;
+            background-color: #7eca9c;
+            border: 3px solid #1c1427;
+            border-radius: 20px;
+        }
+        .employee-form {
+            width: 30%;
+            height: 300px;
+            margin-top: 20px;
+            text-align: center;
+            background-color: #7eca9c;
+            border: 3px solid #1c1427;
+            border-radius: 20px;
+        }
+    </style>
+    <script>
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+    </script>
+</head>
+<body>
+<header>
+    <div id="logo">
+        <span>Donald Truck</span>
+    </div>
+    <div id="menu">
+        <a href="/">Главная страница</a>
+        <a href="/main">Личный кабинет</a>
+        <div id="enter">
+            <div th:switch="${user}">
+                <div th:case="null">
+                    <a href="/login">Войти</a>/<a href="/registration">Регистрация</a>
+                </div>
+                <div th:case="*">
+                    <div id="navbar">
+                        <span onclick="myFunction()" class="dropbtn" th:text="${user.username}"/>
+                        <ul id="myDropdown" class="dropdown-content">
+                            <li><a href="/logout">Выйти</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="content">
+<div class="car-form">
+    <h1>Добавить автомобиль</h1>
+    <form action="/admin/addCar" method="post">
+        <div><label> Тип автомобиля<a style="color:red">*</a></label></div>
+        <div>
+            <select name="truckDescription">
+                <option value="Жёсткий 4м/2.2м/2м Груз 1500кг" selected="selected">Жёсткий 4м/2.2м/2м Груз 1500кг</option>
+                <option value="Тент 3м/1.5м/2м Груз 950кг">Тент 3м/1.5м/2м Груз 950кг</option>
+                <option value="Жёсткий 1.6м/1м/1м Груз 500кг">Жёсткий 1.6м/1м/1м Груз 500кг</option>
+                <option value="Жёсткий 13.6м/2.5м/2.45м Груз 20т">Жёсткий 13.6м/2.5м/2.45м Груз 20т</option>
+            </select>
+        </div>
+        <div>
+            <span style="color:red" th:text = "${carNumber}" />
+        </div>
+        <div><label><input type="text" name="carNumber" id="carNumber" th:value="${carNumber_paste}" placeholder="Номер автомобиля"/> </label> </div>
+        <div><input type="submit" value="принять"/></div>
+    </form>
+</div>
+<div class="employee-form">
+    <h1>Добавить сотрудника</h1>
+    <form action="/admin/addEmployee" method="post">
+        <div>
+            <span style="color:red" th:text = "${name}" />
+        </div>
+        <div><label><input type="text" name="name" id="name" th:value="${name_paste}" placeholder="Имя и фамилия"/> </label></div>
+        <div><input type="submit" value="принять"/></div>
+    </form>
+</div>
+</div>
+</body>
+</html>

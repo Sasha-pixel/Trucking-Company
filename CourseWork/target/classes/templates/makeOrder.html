@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>OrderPage</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Suez+One&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+        body {
+            background-color: #ccffbd;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        }
+        header {
+            width: 100%;
+            background: #1c1427;
+        }
+        #logo {
+            color: white;
+            font-family: 'Suez One', serif;
+            font-size: 35px;
+            float: left;
+            margin-left: 10px;
+        }
+        header #menu {
+            text-align: center;
+            font-size: 15px;
+        }
+        header #menu a {
+            color: white;
+            text-decoration: none;
+            padding: 4px 30px;
+            line-height: 50px;
+        }
+        header #menu a:hover {
+            color: #40394a;
+            background: #7eca9c;
+        }
+        header #menu span {
+            color: white;
+            text-decoration: none;
+            padding: 4px;
+            line-height: 50px;
+        }
+        header #enter {
+            float: right;
+        }
+        .dropbtn {
+            margin-right: 15px;
+<!--            background-color: black;-->
+            /*border-radius: 10px;*/
+            /*float: right;*/
+            color: white;
+            padding: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        #navbar span:hover {
+            color: #40394a;
+            background: #7eca9c;
+        }
+        .dropdown-content {
+            margin-right: 15px;
+            display: none;
+            position: absolute;
+            background-color: #40394a;
+            min-width: 200px;
+            overflow: auto;
+            right: 0;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #40394a;
+            margin: 4px;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: 0.5s;
+        }
+
+        .show {display: block;}
+
+        .content {
+            width: 96%;
+            margin-top: 10px;
+            margin-left:2%;
+        }
+        input, select {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            padding: 5px;
+            margin: 7.5px 0px;
+            border: 2px solid black;
+            background-color: white;
+            border-radius: 15px;
+        }
+        .order-form {
+            height: 450px;
+            width: 100%;
+        }
+        #map {
+            height: 100%;
+            width: 40%;
+            float: left;
+            border: solid 4px #1c1427;
+            border-radius: 20px;
+        }
+        form {
+            float: left;
+            width: 55%;
+            padding: 5px 5px 0px 5px;
+            background-color: #7eca9c;
+            color: black;
+            border: 4px solid #1c1427;
+            border-radius: 20px;
+            margin: 0px 24px 0px 10px;
+            height: 100%;
+        }
+        h1 {
+            margin-left: 10px;
+        }
+    </style>
+    <script>
+        function initMap() {
+            var directionsService = new google.maps.DirectionsService();
+            var directionsRenderer = new google.maps.DirectionsRenderer();
+            var moscow = new google.maps.LatLng(55.753501570096276, 37.61904097674664);
+            var mapOptions = {zoom:7, center: moscow}
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            directionsRenderer.setMap(map);
+            const onChangeHandler = function () {
+                if (document.getElementById("addressFrom").value != "" && document.getElementById("addressTo").value != "") {
+                    calculateAndDisplayRoute(directionsService, directionsRenderer);
+                }
+            };
+            const onChangeNumberOfWorkers = function () {
+                document.getElementById("price").setAttribute('value', Number(document.getElementById("numberOfWorkers").value)*2000+Number(Math.ceil(document.getElementById("distance").value.replace(',', '.').split(' ')[0]))*100);
+            };
+            document.getElementById("numberOfWorkers").addEventListener("change", onChangeNumberOfWorkers);
+            document.getElementById("addressFrom").addEventListener("change", onChangeHandler);
+            document.getElementById("addressTo").addEventListener("change", onChangeHandler);
+            document.getElementById("replaceAddresses").addEventListener("click", onChangeHandler);
+        }
+
+        function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+            directionsService.route(
+            {
+                origin: document.getElementById("addressFrom").value,
+                destination: document.getElementById("addressTo").value,
+                travelMode: google.maps.TravelMode.DRIVING,
+            },
+                (response, status) => {
+                    if (status === "OK") {
+                        directionsRenderer.setDirections(response);
+                        var point = response.routes[0].legs[0];
+                        document.getElementById("distance").setAttribute('value', point.distance.text);
+                        document.getElementById("duration").setAttribute('value', point.duration.text);
+                        document.getElementById("price").setAttribute('value', Number(document.getElementById("numberOfWorkers").value)*2000+Number(Math.ceil(point.distance.text.replace(',', '.').split(' ')[0]))*100);
+                        document.getElementById("OK").disabled = false;
+                    } else {
+                        window.alert("Неверный формат адреса");
+                    }
+                }
+            );
+        }
+    </script>
+    <script>
+        function getTodaysDate(){
+            date = new Date();
+            day = date.getDate() + 1;
+            month = date.getMonth() + 1;
+            month2 = date.getMonth() + 4;
+            year = date.getFullYear();
+            if (month < 10) month = "0" + month;
+            if (month2 < 10) month2 = "0" + month2;
+            if (day < 10) day = "0" + day;
+            today = year + "-" + month + "-" + day;
+            today2 = year + "-" + month2 + "-" + day;
+            document.getElementById('targetDate').setAttribute('min', today);
+            document.getElementById('targetDate').setAttribute('max', today2);
+        }
+    </script>
+    <script>
+        function setHour() {
+            let e = document.getElementById("hours");
+            if (e.value.length >= 2) e.value = e.value.slice(0, 2);
+            if (e.value.length === 1) e.value = '0' + e.value;
+            if (!e.value) e.value = '00';
+            document.getElementById("targetTime").value = e.value + ':' + document.getElementById("minutes").value;
+        }
+        function setMinutes() {
+            let e = document.getElementById("minutes");
+            if (e.value.length >= 2) e.value = e.value.slice(0, 2);
+            if (e.value.length === 1) e.value = '0' + e.value;
+            if (!e.value) e.value = '00';
+            document.getElementById("targetTime").value = document.getElementById("hours").value + ':' + e.value;
+        }
+    </script>
+    <script>
+        function changePlaces() {
+            let from = document.getElementById("addressFrom");
+            let to = document.getElementById("addressTo");
+            var buffer = to.value;
+            to.value = from.value;
+            from.value = buffer;
+        }
+    </script>
+    <script>
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+    </script>
+</head>
+<body>
+<header>
+    <div id="logo">
+        <span>Donald Truck</span>
+    </div>
+    <div id="menu">
+        <a href="/">Главная страница</a>
+        <a href="/main">Личный кабинет</a>
+        <div id="enter">
+            <div th:switch="${user}">
+                <div th:case="null">
+                    <a href="/login">Войти</a>/<a href="/registration">Регистрация</a>
+                </div>
+                <div th:case="*">
+                    <div id="navbar">
+                        <span onclick="myFunction()" class="dropbtn" th:text="${user.username}"/>
+                        <ul id="myDropdown" class="dropdown-content">
+                            <li><a href="/logout">Выйти</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="content">
+<h1>Готовы принять ваш заказ!</h1>
+<div class="order-form">
+    <form action="/makeOrderAction" method="post">
+        <div style="display:inline-block">
+            <label style="margin-right: 10px"> Откуда<a style="color:red">*</a> : <input type="text" name="addressFrom" id="addressFrom" th:value="${addressFrom_paste}"/></label>
+            <img src="https://img.icons8.com/metro/26/000000/sorting-arrows-horizontal.png" style="margin-bottom: -7px; cursor: pointer; width: 20px;" onclick="changePlaces()" id="replaceAddresses"/>
+            <label style="margin-left: 10px">Куда<a style="color:red">*</a> : <input type="text" name="addressTo" id="addressTo" th:value="${addressTo_paste}"/> </label> <span style="color:red" th:text = "${addressFrom}" />
+        </div>
+        <div><label> Расстояние<a style="color:red">*</a> : <input type="text" name="distance" id="distance" th:value="${distance_paste}" readonly/> </label> <span style="color:red" th:text = "${distance}" /></div>
+        <div><label> Длительность<a style="color:red">*</a> : <input type="text" name="duration" id="duration" th:value="${duration_paste}" readonly/> </label> <span style="color:red" th:text = "${duration}" /></div>
+        <div><label> Дата<a style="color:red">*</a> : <input type="date" name="targetDate" id="targetDate" oninput="getTodaysDate()" th:value="${targetDate_paste}"/> </label> <span style="color:red" th:text = "${targetDate}" /></div>
+        <div><label> Время<a style="color:red">*</a> : <input type="number" min="9" max="20" name="hours" id="hours" oninput="setHour()" th:attr="value=${hours_paste}==null?'09':${hours_paste}"/><input type="number" min="0" max="59" name="minutes" id="minutes" oninput="setMinutes()" th:attr="value=${minutes_paste}==null?'00':${minutes_paste}"/></label> <span style="color:red" th:text = "${targetTime}" /></div>
+<!--        <div style="display:none">-->
+<!--            <input type="text" name="targetTime" id="targetTime" th:value="${targetTime_paste}" readonly/>-->
+<!--        </div>-->
+        <input type="hidden" name="targetTime" id="targetTime" th:attr="value=${targetTime_paste}==null?'09:00':${targetTime_paste}" readonly/>
+        <div><label> Количесвто грузчиков<a style="color:red">*</a> : <input type="number" min="1" max="3" required id="numberOfWorkers" name="numberOfWorkers" th:attr="value=${numberOfWorkers_paste}==null?'1':${numberOfWorkers_paste}"/> </label> <span style="color:red" th:text = "${workers}" /></div>
+        <div><label> Тип автомобиля<a style="color:red">*</a> :
+        <select name="truckDescription">
+            <option value="Жёсткий 4м/2.2м/2м Груз 1500кг" selected>Жёсткий 4м/2.2м/2м Груз 1500кг</option>
+            <option value="Тент 3м/1.5м/2м Груз 950кг">Тент 3м/1.5м/2м Груз 950кг</option>
+            <option value="Жёсткий 1.6м/1м/1м Груз 500кг">Жёсткий 1.6м/1м/1м Груз 500кг</option>
+            <option value="Жёсткий 13.6м/2.5м/2.45м Груз 20т">Жёсткий 13.6м/2.5м/2.45м Груз 20т</option>
+        </select>
+        </label> <span style="color:red" th:text = "${truck}" /></div>
+        <div><label> Примерная цена<a style="color:red">*</a> : <input type="text" name="price" id="price" th:value="${price_paste}" readonly/> </label> <span style="color:red" th:text = "${price}" /></div>
+        <div th:switch="${again}">
+            <div th:case="yes">
+                <div><input type="submit" id="OK" value="принять"/></div>
+            </div>
+            <div th:case="*">
+                <div><input type="submit" id="OK" value="принять" disabled/></div>
+            </div>
+        </div>
+    </form>
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBILU5tuxXgWHoI7KIOfUL5rk4JF98BPic&callback=initMap&libraries=&v=weekly&language=ru"
+            async
+    ></script>
+    <div id="map"></div>
+</div>
+</div>
+</body>
+</html>
