@@ -24,12 +24,12 @@ public class EndController implements ApplicationContextAware {
         this.context = ctx;
     }
 
-    /**
-     * Закрытие
-     */
-    @GetMapping(value = "/end")
-    public void shutdownContext() {
-        ((ConfigurableApplicationContext) context).close();
-    }
+//    /**
+//     * Закрытие
+//     */
+//    @GetMapping(value = "/end")
+//    public void shutdownContext() {
+//        ((ConfigurableApplicationContext) context).close();
+//    }
 
 }
