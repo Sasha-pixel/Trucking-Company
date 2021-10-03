@@ -26,6 +26,20 @@ public class TruckService {
 
     @Autowired
     private TruckValidator truckValidator;
+    
+    public List<Truck> getAllTrucks() {
+        return (List<Truck>) truckRepository.findAll();
+    }
+
+    @Transactional
+    public void deleteAllByDescription(String description) {
+        truckRepository.deleteAllByDescription(description);
+    }
+
+    @Transactional
+    public void deleteAllByCarNumber(String carNumber) {
+        truckRepository.deleteAllByCarNumber(carNumber);
+    }
 
     /**
      * метод сохранения нового автомобиля
