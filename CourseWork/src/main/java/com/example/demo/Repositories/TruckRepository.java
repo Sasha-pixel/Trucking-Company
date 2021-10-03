@@ -26,4 +26,8 @@ public interface TruckRepository extends CrudRepository<Truck, Long> {
      * @return грузовик с указанным номером
      */
     Truck findByCarNumber(String carNumber);
+    
+    void deleteAllByDescription(String description);
+
+    void deleteAllByCarNumber(String carNumber);
 }
