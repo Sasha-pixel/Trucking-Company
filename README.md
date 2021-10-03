@@ -1,7 +1,7 @@
 ﻿# Trucking-Company
  
 Веб-риложение доступно по ссылке: https://my-app-for-pr.herokuapp.com/
- 
+Документация к приложению: https://github.com/Sasha-pixel/Trucking-Company-Doc
 ## О проекте
 
 Данный проект разрабатывается в учебных целях.
