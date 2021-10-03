@@ -28,4 +28,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
      * @return объект сотрудника
      */
     Employee findByName(String name);
+    
+    void deleteAllByName(String name);
 }
