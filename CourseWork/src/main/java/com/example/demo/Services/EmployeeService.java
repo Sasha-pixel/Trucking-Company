@@ -28,6 +28,11 @@ public class EmployeeService {
 
     @Autowired
     private EmployeeValidator employeeValidator;
+    
+    @Transactional
+    public void deleteAllByName(String name) {
+        employeeRepository.deleteAllByName(name);
+    }
 
     /**
      * получение всех работников из таблицы
